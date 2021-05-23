@@ -13,7 +13,6 @@ This doc explains how to setup a development environment so you can get started
    [GitHub access via SSH](https://help.github.com/articles/connecting-to-github-with-ssh/)
 1. Install [requirements](#requirements)
 1. Set up your [shell environment](#environment-setup)
-1. [Create and checkout a repo fork](#checkout-your-fork)
 
 Before submitting a PR, see also [CONTRIBUTING.md](./CONTRIBUTING.md).
 
@@ -42,31 +41,3 @@ adding them to your `.bashrc`):
 export GOPATH="$HOME/go"
 export PATH="${PATH}:${GOPATH}/bin"
 ```
-
-### Checkout your fork
-
-The Go tools require that you clone the repository to the
-`src/knative.dev/sample-controller` directory in your
-[`GOPATH`](https://github.com/golang/go/wiki/SettingGOPATH).
-
-To check out this repository:
-
-1. Create your own
-   [fork of this repo](https://help.github.com/articles/fork-a-repo/)
-
-1. Clone it to your machine:
-
-```shell
-mkdir -p ${GOPATH}/src/knative.dev
-cd ${GOPATH}/src/knative.dev
-git clone git@github.com:${YOUR_GITHUB_USERNAME}/sample-controller.git
-cd sample-controller
-git remote add upstream https://github.com/knative-sandbox/sample-controller.git
-git remote set-url --push upstream no_push
-```
-
-_Adding the `upstream` remote sets you up nicely for regularly
-[syncing your fork](https://help.github.com/articles/syncing-a-fork/)._
-
-Once you reach this point you are ready to do a full build and deploy as
-described below.

@@ -1,14 +1,20 @@
-# Knative Sample Controller
+# Cloudevents POC Controller
 
-[![GoDoc](https://godoc.org/knative.dev/sample-controller?status.svg)](https://godoc.org/knative.dev/sample-controller)
-[![Go Report Card](https://goreportcard.com/badge/knative/sample-controller)](https://goreportcard.com/report/knative/sample-controller)
+Create cloudevent sinks and conversion sources which map to those particular sinks.
 
-Knative `sample-controller` defines a few simple resources that are validated by
-webhook and managed by a controller to demonstrate the canonical style in which
-Knative writes controllers.
+## Terminology
 
-To learn more about Knative, please visit our
-[Knative docs](https://github.com/knative/docs) repository.
+`Sink` : Sink where cloudevents can be dumped
+
+`ConvertSource` : Source which can be used to send converted cloudevents from a Sink. 
+
+### Sink 
+
+```yaml
+kind: Sink
+spec:
+  
+```
 
 If you are interested in contributing, see [CONTRIBUTING.md](./CONTRIBUTING.md)
 and [DEVELOPMENT.md](./DEVELOPMENT.md).
