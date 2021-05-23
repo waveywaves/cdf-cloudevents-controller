@@ -4,16 +4,35 @@ Create cloudevent sinks and conversion sources which map to those particular sin
 
 ## Terminology
 
-`Sink` : Sink where cloudevents can be dumped
+`CloudeventSink` : Sink where cloudevents can be dumped
 
-`ConvertSource` : Source which can be used to send converted cloudevents from a Sink. 
+`ConversionBroker` : Source which can be used to send converted cloudevents from a Sink. 
 
-### Sink 
+### CloudeventSink 
+
+`CloudeventSink` creates a `Deployment` (which backs the sink) and a corresponding `Service` 
+which can be used wherever we can give a cloudevents sink url.
 
 ```yaml
-kind: Sink
+kind: CloudeventSink
+metadata:
+  name: tekton-sink
+  namespace: tekton-pipelines
+spec: 
+  type: "http" # type of cloudevents which the sink can accept
+```
+
+### ConversionBroker
+
+`ConversionBroker` converts incoming cloudevent from the sink to the required type.
+
+```yaml
+kind: ConversionBroker
+metadata:
+  name: tekton-event-broker
+  namespace: jenkins
 spec:
-  
+  sink: "http://sink-url:6666"
 ```
 
 If you are interested in contributing, see [CONTRIBUTING.md](./CONTRIBUTING.md)
