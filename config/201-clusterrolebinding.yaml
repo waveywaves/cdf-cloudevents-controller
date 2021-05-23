@@ -20,7 +20,7 @@ metadata:
     cloudevents.waveywaves.dev/release: devel
 subjects:
   - kind: ServiceAccount
-    name: controller
+    name: cloudevents-controller
     namespace: cloudevents-controller
 roleRef:
   kind: ClusterRole

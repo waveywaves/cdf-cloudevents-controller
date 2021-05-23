@@ -17,6 +17,7 @@ limitations under the License.
 package main
 
 import (
+	"context"
 	"flag"
 	"github.com/waveywaves/cloudevents-controller/pkg/apis/samples"
 	"log"
@@ -24,9 +25,17 @@ import (
 	// The set of controllers this controller process runs.
 	"github.com/waveywaves/cloudevents-controller/pkg/reconciler/addressableservice"
 	"github.com/waveywaves/cloudevents-controller/pkg/reconciler/cloudeventsink"
+	filteredinformerfactory "knative.dev/pkg/client/injection/kube/informers/factory/filtered"
 
 	// This defines the shared main for injected controllers.
 	"knative.dev/pkg/injection/sharedmain"
+
+	"k8s.io/client-go/rest"
+)
+
+const (
+	// ControllerLogKey is the name of the logger for the controller cmd
+	ControllerLogKey = "cloudevents-controller"
 )
 
 var (
@@ -34,16 +43,27 @@ var (
 )
 
 func main() {
-
+	cfg := sharedmain.ParseAndGetConfigOrDie()
 	sinkImages := samples.SinkImages{
 		HTTP: *sinkHTTPImage,
 	}
 	if err := sinkImages.Validate(); err != nil {
 		log.Fatal(err)
 	}
+	if cfg.QPS == 0 {
+		cfg.QPS = 2 * rest.DefaultQPS
+	}
+	if cfg.Burst == 0 {
+		cfg.Burst = rest.DefaultBurst
+	}
 
-	sharedmain.Main("controller",
+	ctx := filteredinformerfactory.WithSelectors(context.Background(), "")
+	sharedmain.MainWithConfig(ctx, ControllerLogKey, cfg,
 		addressableservice.NewController,
 		cloudeventsink.NewController(sinkImages),
+	)
+
+	sharedmain.Main("controller",
+
 	)
 }
