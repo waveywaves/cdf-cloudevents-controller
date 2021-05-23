@@ -35,6 +35,6 @@ func init() {
 
 func withInformer(ctx context.Context) (context.Context, controller.Informer) {
 	f := fake.Get(ctx)
-	inf := f.Samples().V1alpha1().AddressableServices()
+	inf := f.Cloudevents().V1alpha1().AddressableServices()
 	return context.WithValue(ctx, addressableservice.Key{}, inf), inf.Informer()
 }

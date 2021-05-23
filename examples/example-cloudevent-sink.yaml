@@ -1,5 +1,5 @@
-apiVersion: samples.knative.dev/v1alpha1
-kind: SimpleDeployment
+apiVersion: cloudevents.waveywaves.dev/v1alpha1
+kind: CloudeventSink
 metadata:
   name: example-simple-deployment
 spec:

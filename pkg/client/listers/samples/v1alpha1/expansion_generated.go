@@ -26,10 +26,10 @@ type AddressableServiceListerExpansion interface{}
 // AddressableServiceNamespaceLister.
 type AddressableServiceNamespaceListerExpansion interface{}
 
-// SimpleDeploymentListerExpansion allows custom methods to be added to
-// SimpleDeploymentLister.
-type SimpleDeploymentListerExpansion interface{}
+// CloudeventSinkListerExpansion allows custom methods to be added to
+// CloudeventSinkLister.
+type CloudeventSinkListerExpansion interface{}
 
-// SimpleDeploymentNamespaceListerExpansion allows custom methods to be added to
-// SimpleDeploymentNamespaceLister.
-type SimpleDeploymentNamespaceListerExpansion interface{}
+// CloudeventSinkNamespaceListerExpansion allows custom methods to be added to
+// CloudeventSinkNamespaceLister.
+type CloudeventSinkNamespaceListerExpansion interface{}

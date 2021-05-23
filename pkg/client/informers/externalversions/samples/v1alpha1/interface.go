@@ -26,8 +26,8 @@ import (
 type Interface interface {
 	// AddressableServices returns a AddressableServiceInformer.
 	AddressableServices() AddressableServiceInformer
-	// SimpleDeployments returns a SimpleDeploymentInformer.
-	SimpleDeployments() SimpleDeploymentInformer
+	// CloudeventSinks returns a CloudeventSinkInformer.
+	CloudeventSinks() CloudeventSinkInformer
 }
 
 type version struct {
@@ -46,7 +46,7 @@ func (v *version) AddressableServices() AddressableServiceInformer {
 	return &addressableServiceInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
 }
 
-// SimpleDeployments returns a SimpleDeploymentInformer.
-func (v *version) SimpleDeployments() SimpleDeploymentInformer {
-	return &simpleDeploymentInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
+// CloudeventSinks returns a CloudeventSinkInformer.
+func (v *version) CloudeventSinks() CloudeventSinkInformer {
+	return &cloudeventSinkInformer{factory: v.factory, namespace: v.namespace, tweakListOptions: v.tweakListOptions}
 }

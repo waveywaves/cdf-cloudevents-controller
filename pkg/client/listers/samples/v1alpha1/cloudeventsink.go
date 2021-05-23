@@ -25,61 +25,61 @@ import (
 	"k8s.io/client-go/tools/cache"
 )
 
-// SimpleDeploymentLister helps list SimpleDeployments.
+// CloudeventSinkLister helps list CloudeventSinks.
 // All objects returned here must be treated as read-only.
-type SimpleDeploymentLister interface {
-	// List lists all SimpleDeployments in the indexer.
+type CloudeventSinkLister interface {
+	// List lists all CloudeventSinks in the indexer.
 	// Objects returned here must be treated as read-only.
 	List(selector labels.Selector) (ret []*v1alpha1.CloudeventSink, err error)
-	// SimpleDeployments returns an object that can list and get SimpleDeployments.
-	SimpleDeployments(namespace string) SimpleDeploymentNamespaceLister
-	SimpleDeploymentListerExpansion
+	// CloudeventSinks returns an object that can list and get CloudeventSinks.
+	CloudeventSinks(namespace string) CloudeventSinkNamespaceLister
+	CloudeventSinkListerExpansion
 }
 
-// simpleDeploymentLister implements the SimpleDeploymentLister interface.
-type simpleDeploymentLister struct {
+// cloudeventSinkLister implements the CloudeventSinkLister interface.
+type cloudeventSinkLister struct {
 	indexer cache.Indexer
 }
 
-// NewSimpleDeploymentLister returns a new SimpleDeploymentLister.
-func NewSimpleDeploymentLister(indexer cache.Indexer) SimpleDeploymentLister {
-	return &simpleDeploymentLister{indexer: indexer}
+// NewCloudeventSinkLister returns a new CloudeventSinkLister.
+func NewCloudeventSinkLister(indexer cache.Indexer) CloudeventSinkLister {
+	return &cloudeventSinkLister{indexer: indexer}
 }
 
-// List lists all SimpleDeployments in the indexer.
-func (s *simpleDeploymentLister) List(selector labels.Selector) (ret []*v1alpha1.CloudeventSink, err error) {
+// List lists all CloudeventSinks in the indexer.
+func (s *cloudeventSinkLister) List(selector labels.Selector) (ret []*v1alpha1.CloudeventSink, err error) {
 	err = cache.ListAll(s.indexer, selector, func(m interface{}) {
 		ret = append(ret, m.(*v1alpha1.CloudeventSink))
 	})
 	return ret, err
 }
 
-// SimpleDeployments returns an object that can list and get SimpleDeployments.
-func (s *simpleDeploymentLister) SimpleDeployments(namespace string) SimpleDeploymentNamespaceLister {
-	return simpleDeploymentNamespaceLister{indexer: s.indexer, namespace: namespace}
+// CloudeventSinks returns an object that can list and get CloudeventSinks.
+func (s *cloudeventSinkLister) CloudeventSinks(namespace string) CloudeventSinkNamespaceLister {
+	return cloudeventSinkNamespaceLister{indexer: s.indexer, namespace: namespace}
 }
 
-// SimpleDeploymentNamespaceLister helps list and get SimpleDeployments.
+// CloudeventSinkNamespaceLister helps list and get CloudeventSinks.
 // All objects returned here must be treated as read-only.
-type SimpleDeploymentNamespaceLister interface {
-	// List lists all SimpleDeployments in the indexer for a given namespace.
+type CloudeventSinkNamespaceLister interface {
+	// List lists all CloudeventSinks in the indexer for a given namespace.
 	// Objects returned here must be treated as read-only.
 	List(selector labels.Selector) (ret []*v1alpha1.CloudeventSink, err error)
 	// Get retrieves the CloudeventSink from the indexer for a given namespace and name.
 	// Objects returned here must be treated as read-only.
 	Get(name string) (*v1alpha1.CloudeventSink, error)
-	SimpleDeploymentNamespaceListerExpansion
+	CloudeventSinkNamespaceListerExpansion
 }
 
-// simpleDeploymentNamespaceLister implements the SimpleDeploymentNamespaceLister
+// cloudeventSinkNamespaceLister implements the CloudeventSinkNamespaceLister
 // interface.
-type simpleDeploymentNamespaceLister struct {
+type cloudeventSinkNamespaceLister struct {
 	indexer   cache.Indexer
 	namespace string
 }
 
-// List lists all SimpleDeployments in the indexer for a given namespace.
-func (s simpleDeploymentNamespaceLister) List(selector labels.Selector) (ret []*v1alpha1.CloudeventSink, err error) {
+// List lists all CloudeventSinks in the indexer for a given namespace.
+func (s cloudeventSinkNamespaceLister) List(selector labels.Selector) (ret []*v1alpha1.CloudeventSink, err error) {
 	err = cache.ListAllByNamespace(s.indexer, s.namespace, selector, func(m interface{}) {
 		ret = append(ret, m.(*v1alpha1.CloudeventSink))
 	})
@@ -87,13 +87,13 @@ func (s simpleDeploymentNamespaceLister) List(selector labels.Selector) (ret []*
 }
 
 // Get retrieves the CloudeventSink from the indexer for a given namespace and name.
-func (s simpleDeploymentNamespaceLister) Get(name string) (*v1alpha1.CloudeventSink, error) {
+func (s cloudeventSinkNamespaceLister) Get(name string) (*v1alpha1.CloudeventSink, error) {
 	obj, exists, err := s.indexer.GetByKey(s.namespace + "/" + name)
 	if err != nil {
 		return nil, err
 	}
 	if !exists {
-		return nil, errors.NewNotFound(v1alpha1.Resource("simpledeployment"), name)
+		return nil, errors.NewNotFound(v1alpha1.Resource("cloudeventsink"), name)
 	}
 	return obj.(*v1alpha1.CloudeventSink), nil
 }

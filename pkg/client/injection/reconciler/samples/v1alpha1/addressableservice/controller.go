@@ -44,7 +44,7 @@ import (
 
 const (
 	defaultControllerAgentName = "addressableservice-controller"
-	defaultFinalizerName       = "addressableservices.samples.knative.dev"
+	defaultFinalizerName       = "addressableservices.cloudevents.waveywaves.dev"
 )
 
 // NewImpl returns a controller.Impl that handles queuing and feeding work from
@@ -92,7 +92,7 @@ func NewImpl(ctx context.Context, r Interface, optionsFns ...controller.OptionsF
 
 	logger = logger.With(
 		zap.String(logkey.ControllerType, ctrTypeName),
-		zap.String(logkey.Kind, "samples.knative.dev.AddressableService"),
+		zap.String(logkey.Kind, "cloudevents.waveywaves.dev.AddressableService"),
 	)
 
 	impl := controller.NewImpl(rec, logger, ctrTypeName)

@@ -319,7 +319,7 @@ func (r *reconcilerImpl) updateStatus(ctx context.Context, existing *v1alpha1.Ad
 		// The first iteration tries to use the injectionInformer's state, subsequent attempts fetch the latest state via API.
 		if attempts > 0 {
 
-			getter := r.Client.SamplesV1alpha1().AddressableServices(desired.Namespace)
+			getter := r.Client.CloudeventsV1alpha1().AddressableServices(desired.Namespace)
 
 			existing, err = getter.Get(ctx, desired.Name, metav1.GetOptions{})
 			if err != nil {
@@ -338,7 +338,7 @@ func (r *reconcilerImpl) updateStatus(ctx context.Context, existing *v1alpha1.Ad
 
 		existing.Status = desired.Status
 
-		updater := r.Client.SamplesV1alpha1().AddressableServices(existing.Namespace)
+		updater := r.Client.CloudeventsV1alpha1().AddressableServices(existing.Namespace)
 
 		_, err = updater.UpdateStatus(ctx, existing, metav1.UpdateOptions{})
 		return err
@@ -395,7 +395,7 @@ func (r *reconcilerImpl) updateFinalizersFiltered(ctx context.Context, resource 
 		return resource, err
 	}
 
-	patcher := r.Client.SamplesV1alpha1().AddressableServices(resource.Namespace)
+	patcher := r.Client.CloudeventsV1alpha1().AddressableServices(resource.Namespace)
 
 	resourceName := resource.Name
 	updated, err := patcher.Patch(ctx, resourceName, types.MergePatchType, patch, metav1.PatchOptions{})

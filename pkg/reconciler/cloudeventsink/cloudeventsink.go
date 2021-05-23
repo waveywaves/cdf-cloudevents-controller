@@ -28,7 +28,7 @@ import (
 
 	"github.com/waveywaves/cloudevents-controller/pkg/apis/samples"
 	samplesv1alpha1 "github.com/waveywaves/cloudevents-controller/pkg/apis/samples/v1alpha1"
-	simpledeploymentreconciler "github.com/waveywaves/cloudevents-controller/pkg/client/injection/reconciler/samples/v1alpha1/simpledeployment"
+	cloudeventsinkreconciler "github.com/waveywaves/cloudevents-controller/pkg/client/injection/reconciler/samples/v1alpha1/cloudeventsink"
 	"knative.dev/pkg/kmeta"
 	"knative.dev/pkg/logging"
 	"knative.dev/pkg/reconciler"
@@ -38,7 +38,7 @@ import (
 // pod, allowing us to easily list all pods a single CloudeventSink created.
 const podOwnerLabelKey = samples.GroupName + "/podOwner"
 
-// Reconciler implements simpledeploymentreconciler.Interface for
+// Reconciler implements cloudeventsinkreconciler.Interface for
 // CloudeventSink resources.
 type Reconciler struct {
 	kubeclient kubernetes.Interface
@@ -46,7 +46,7 @@ type Reconciler struct {
 }
 
 // Check that our Reconciler implements Interface
-var _ simpledeploymentreconciler.Interface = (*Reconciler)(nil)
+var _ cloudeventsinkreconciler.Interface = (*Reconciler)(nil)
 
 // ReconcileKind implements Interface.ReconcileKind.
 func (r *Reconciler) ReconcileKind(ctx context.Context, d *samplesv1alpha1.CloudeventSink) reconciler.Event {

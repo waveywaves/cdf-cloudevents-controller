@@ -1,4 +1,4 @@
-apiVersion: samples.knative.dev/v1alpha1
+apiVersion: cloudevents.waveywaves.dev/v1alpha1
 kind: AddressableService
 metadata:
   name: make-it-addressable

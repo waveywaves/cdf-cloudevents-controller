@@ -21,7 +21,7 @@ import (
 	"knative.dev/pkg/apis"
 )
 
-var simpleDeploymentCondSet = apis.NewLivingConditionSet()
+var cloudeventSinkCondSet = apis.NewLivingConditionSet()
 
 // GetGroupVersionKind implements kmeta.OwnerRefable
 func (*CloudeventSink) GetGroupVersionKind() schema.GroupVersionKind {
@@ -30,17 +30,17 @@ func (*CloudeventSink) GetGroupVersionKind() schema.GroupVersionKind {
 
 // GetConditionSet retrieves the condition set for this resource. Implements the KRShaped interface.
 func (d *CloudeventSink) GetConditionSet() apis.ConditionSet {
-	return simpleDeploymentCondSet
+	return cloudeventSinkCondSet
 }
 
 // InitializeConditions sets the initial values to the conditions.
 func (ds *CloudeventSinkStatus) InitializeConditions() {
-	simpleDeploymentCondSet.Manage(ds).InitializeConditions()
+	cloudeventSinkCondSet.Manage(ds).InitializeConditions()
 }
 
 // MarkPodsNotReady makes the CloudeventSink be not ready.
 func (ds *CloudeventSinkStatus) MarkPodsNotReady(n int32) {
-	simpleDeploymentCondSet.Manage(ds).MarkFalse(
+	cloudeventSinkCondSet.Manage(ds).MarkFalse(
 		SimpleDeploymentConditionReady,
 		"PodsNotReady",
 		"%d pods are not ready yet", n)
@@ -48,5 +48,5 @@ func (ds *CloudeventSinkStatus) MarkPodsNotReady(n int32) {
 
 // MarkPodsReady makes the CloudeventSink be ready.
 func (ds *CloudeventSinkStatus) MarkPodsReady() {
-	simpleDeploymentCondSet.Manage(ds).MarkTrue(SimpleDeploymentConditionReady)
+	cloudeventSinkCondSet.Manage(ds).MarkTrue(SimpleDeploymentConditionReady)
 }

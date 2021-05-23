@@ -71,10 +71,10 @@ type CloudeventSinkStatus struct {
 	ReadyReplicas int32 `json:"readyReplicas"`
 }
 
-// SimpleDeploymentList is a list of AddressableService resources
+// CloudeventSinkList is a list of AddressableService resources
 //
 // +k8s:deepcopy-gen:interfaces=k8s.io/apimachinery/pkg/runtime.Object
-type SimpleDeploymentList struct {
+type CloudeventSinkList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata"`
 

@@ -20,8 +20,8 @@ package fake
 
 import (
 	clientset "github.com/waveywaves/cloudevents-controller/pkg/client/clientset/versioned"
-	samplesv1alpha1 "github.com/waveywaves/cloudevents-controller/pkg/client/clientset/versioned/typed/samples/v1alpha1"
-	fakesamplesv1alpha1 "github.com/waveywaves/cloudevents-controller/pkg/client/clientset/versioned/typed/samples/v1alpha1/fake"
+	cloudeventsv1alpha1 "github.com/waveywaves/cloudevents-controller/pkg/client/clientset/versioned/typed/samples/v1alpha1"
+	fakecloudeventsv1alpha1 "github.com/waveywaves/cloudevents-controller/pkg/client/clientset/versioned/typed/samples/v1alpha1/fake"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/watch"
 	"k8s.io/client-go/discovery"
@@ -76,7 +76,7 @@ func (c *Clientset) Tracker() testing.ObjectTracker {
 
 var _ clientset.Interface = &Clientset{}
 
-// SamplesV1alpha1 retrieves the SamplesV1alpha1Client
-func (c *Clientset) SamplesV1alpha1() samplesv1alpha1.SamplesV1alpha1Interface {
-	return &fakesamplesv1alpha1.FakeSamplesV1alpha1{Fake: &c.Fake}
+// CloudeventsV1alpha1 retrieves the CloudeventsV1alpha1Client
+func (c *Clientset) CloudeventsV1alpha1() cloudeventsv1alpha1.CloudeventsV1alpha1Interface {
+	return &fakecloudeventsv1alpha1.FakeCloudeventsV1alpha1{Fake: &c.Fake}
 }

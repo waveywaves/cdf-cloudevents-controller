@@ -36,9 +36,9 @@ type FakeSimpleDeployments struct {
 	ns   string
 }
 
-var simpledeploymentsResource = schema.GroupVersionResource{Group: "samples.knative.dev", Version: "v1alpha1", Resource: "simpledeployments"}
+var simpledeploymentsResource = schema.GroupVersionResource{Group: "cloudevents.waveywaves.dev", Version: "v1alpha1", Resource: "simpledeployments"}
 
-var simpledeploymentsKind = schema.GroupVersionKind{Group: "samples.knative.dev", Version: "v1alpha1", Kind: "CloudeventSink"}
+var simpledeploymentsKind = schema.GroupVersionKind{Group: "cloudevents.waveywaves.dev", Version: "v1alpha1", Kind: "CloudeventSink"}
 
 // Get takes name of the simpleDeployment, and returns the corresponding simpleDeployment object, and an error if there is any.
 func (c *FakeSimpleDeployments) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.CloudeventSink, err error) {
@@ -52,9 +52,9 @@ func (c *FakeSimpleDeployments) Get(ctx context.Context, name string, options v1
 }
 
 // List takes label and field selectors, and returns the list of SimpleDeployments that match those selectors.
-func (c *FakeSimpleDeployments) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.SimpleDeploymentList, err error) {
+func (c *FakeSimpleDeployments) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.CloudeventSinkList, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewListAction(simpledeploymentsResource, simpledeploymentsKind, c.ns, opts), &v1alpha1.SimpleDeploymentList{})
+		Invokes(testing.NewListAction(simpledeploymentsResource, simpledeploymentsKind, c.ns, opts), &v1alpha1.CloudeventSinkList{})
 
 	if obj == nil {
 		return nil, err
@@ -64,8 +64,8 @@ func (c *FakeSimpleDeployments) List(ctx context.Context, opts v1.ListOptions) (
 	if label == nil {
 		label = labels.Everything()
 	}
-	list := &v1alpha1.SimpleDeploymentList{ListMeta: obj.(*v1alpha1.SimpleDeploymentList).ListMeta}
-	for _, item := range obj.(*v1alpha1.SimpleDeploymentList).Items {
+	list := &v1alpha1.CloudeventSinkList{ListMeta: obj.(*v1alpha1.CloudeventSinkList).ListMeta}
+	for _, item := range obj.(*v1alpha1.CloudeventSinkList).Items {
 		if label.Matches(labels.Set(item.Labels)) {
 			list.Items = append(list.Items, item)
 		}
@@ -126,7 +126,7 @@ func (c *FakeSimpleDeployments) Delete(ctx context.Context, name string, opts v1
 func (c *FakeSimpleDeployments) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
 	action := testing.NewDeleteCollectionAction(simpledeploymentsResource, c.ns, listOpts)
 
-	_, err := c.Fake.Invokes(action, &v1alpha1.SimpleDeploymentList{})
+	_, err := c.Fake.Invokes(action, &v1alpha1.CloudeventSinkList{})
 	return err
 }
 

@@ -23,8 +23,8 @@ import (
 	"knative.dev/pkg/controller"
 	"knative.dev/pkg/logging"
 
-	simpledeploymentinformer "github.com/waveywaves/cloudevents-controller/pkg/client/injection/informers/samples/v1alpha1/simpledeployment"
-	simpledeploymentreconciler "github.com/waveywaves/cloudevents-controller/pkg/client/injection/reconciler/samples/v1alpha1/simpledeployment"
+	simpledeploymentinformer "github.com/waveywaves/cloudevents-controller/pkg/client/injection/informers/samples/v1alpha1/cloudeventsink"
+	simpledeploymentreconciler "github.com/waveywaves/cloudevents-controller/pkg/client/injection/reconciler/samples/v1alpha1/cloudeventsink"
 	kubeclient "knative.dev/pkg/client/injection/kube/client"
 	podinformer "knative.dev/pkg/client/injection/kube/informers/core/v1/pod"
 )

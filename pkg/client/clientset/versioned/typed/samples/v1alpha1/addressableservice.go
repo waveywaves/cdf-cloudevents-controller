@@ -57,7 +57,7 @@ type addressableServices struct {
 }
 
 // newAddressableServices returns a AddressableServices
-func newAddressableServices(c *SamplesV1alpha1Client, namespace string) *addressableServices {
+func newAddressableServices(c *CloudeventsV1alpha1Client, namespace string) *addressableServices {
 	return &addressableServices{
 		client: c.RESTClient(),
 		ns:     namespace,

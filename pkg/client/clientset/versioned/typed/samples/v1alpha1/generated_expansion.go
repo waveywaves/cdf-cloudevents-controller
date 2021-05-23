@@ -20,4 +20,4 @@ package v1alpha1
 
 type AddressableServiceExpansion interface{}
 
-type SimpleDeploymentExpansion interface{}
+type CloudeventSinkExpansion interface{}

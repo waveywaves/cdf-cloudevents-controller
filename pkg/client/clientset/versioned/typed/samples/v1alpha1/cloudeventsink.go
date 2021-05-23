@@ -30,46 +30,46 @@ import (
 	rest "k8s.io/client-go/rest"
 )
 
-// SimpleDeploymentsGetter has a method to return a SimpleDeploymentInterface.
+// CloudeventSinksGetter has a method to return a CloudeventSinkInterface.
 // A group's client should implement this interface.
-type SimpleDeploymentsGetter interface {
-	SimpleDeployments(namespace string) SimpleDeploymentInterface
+type CloudeventSinksGetter interface {
+	CloudeventSinks(namespace string) CloudeventSinkInterface
 }
 
-// SimpleDeploymentInterface has methods to work with CloudeventSink resources.
-type SimpleDeploymentInterface interface {
-	Create(ctx context.Context, simpleDeployment *v1alpha1.CloudeventSink, opts v1.CreateOptions) (*v1alpha1.CloudeventSink, error)
-	Update(ctx context.Context, simpleDeployment *v1alpha1.CloudeventSink, opts v1.UpdateOptions) (*v1alpha1.CloudeventSink, error)
-	UpdateStatus(ctx context.Context, simpleDeployment *v1alpha1.CloudeventSink, opts v1.UpdateOptions) (*v1alpha1.CloudeventSink, error)
+// CloudeventSinkInterface has methods to work with CloudeventSink resources.
+type CloudeventSinkInterface interface {
+	Create(ctx context.Context, cloudeventSink *v1alpha1.CloudeventSink, opts v1.CreateOptions) (*v1alpha1.CloudeventSink, error)
+	Update(ctx context.Context, cloudeventSink *v1alpha1.CloudeventSink, opts v1.UpdateOptions) (*v1alpha1.CloudeventSink, error)
+	UpdateStatus(ctx context.Context, cloudeventSink *v1alpha1.CloudeventSink, opts v1.UpdateOptions) (*v1alpha1.CloudeventSink, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
 	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.CloudeventSink, error)
-	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.SimpleDeploymentList, error)
+	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.CloudeventSinkList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
 	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.CloudeventSink, err error)
-	SimpleDeploymentExpansion
+	CloudeventSinkExpansion
 }
 
-// simpleDeployments implements SimpleDeploymentInterface
-type simpleDeployments struct {
+// cloudeventSinks implements CloudeventSinkInterface
+type cloudeventSinks struct {
 	client rest.Interface
 	ns     string
 }
 
-// newSimpleDeployments returns a SimpleDeployments
-func newSimpleDeployments(c *SamplesV1alpha1Client, namespace string) *simpleDeployments {
-	return &simpleDeployments{
+// newCloudeventSinks returns a CloudeventSinks
+func newCloudeventSinks(c *CloudeventsV1alpha1Client, namespace string) *cloudeventSinks {
+	return &cloudeventSinks{
 		client: c.RESTClient(),
 		ns:     namespace,
 	}
 }
 
-// Get takes name of the simpleDeployment, and returns the corresponding simpleDeployment object, and an error if there is any.
-func (c *simpleDeployments) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.CloudeventSink, err error) {
+// Get takes name of the cloudeventSink, and returns the corresponding cloudeventSink object, and an error if there is any.
+func (c *cloudeventSinks) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.CloudeventSink, err error) {
 	result = &v1alpha1.CloudeventSink{}
 	err = c.client.Get().
 		Namespace(c.ns).
-		Resource("simpledeployments").
+		Resource("cloudeventsinks").
 		Name(name).
 		VersionedParams(&options, scheme.ParameterCodec).
 		Do(ctx).
@@ -77,16 +77,16 @@ func (c *simpleDeployments) Get(ctx context.Context, name string, options v1.Get
 	return
 }
 
-// List takes label and field selectors, and returns the list of SimpleDeployments that match those selectors.
-func (c *simpleDeployments) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.SimpleDeploymentList, err error) {
+// List takes label and field selectors, and returns the list of CloudeventSinks that match those selectors.
+func (c *cloudeventSinks) List(ctx context.Context, opts v1.ListOptions) (result *v1alpha1.CloudeventSinkList, err error) {
 	var timeout time.Duration
 	if opts.TimeoutSeconds != nil {
 		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
 	}
-	result = &v1alpha1.SimpleDeploymentList{}
+	result = &v1alpha1.CloudeventSinkList{}
 	err = c.client.Get().
 		Namespace(c.ns).
-		Resource("simpledeployments").
+		Resource("cloudeventsinks").
 		VersionedParams(&opts, scheme.ParameterCodec).
 		Timeout(timeout).
 		Do(ctx).
@@ -94,8 +94,8 @@ func (c *simpleDeployments) List(ctx context.Context, opts v1.ListOptions) (resu
 	return
 }
 
-// Watch returns a watch.Interface that watches the requested simpleDeployments.
-func (c *simpleDeployments) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
+// Watch returns a watch.Interface that watches the requested cloudeventSinks.
+func (c *cloudeventSinks) Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error) {
 	var timeout time.Duration
 	if opts.TimeoutSeconds != nil {
 		timeout = time.Duration(*opts.TimeoutSeconds) * time.Second
@@ -103,34 +103,34 @@ func (c *simpleDeployments) Watch(ctx context.Context, opts v1.ListOptions) (wat
 	opts.Watch = true
 	return c.client.Get().
 		Namespace(c.ns).
-		Resource("simpledeployments").
+		Resource("cloudeventsinks").
 		VersionedParams(&opts, scheme.ParameterCodec).
 		Timeout(timeout).
 		Watch(ctx)
 }
 
-// Create takes the representation of a simpleDeployment and creates it.  Returns the server's representation of the simpleDeployment, and an error, if there is any.
-func (c *simpleDeployments) Create(ctx context.Context, simpleDeployment *v1alpha1.CloudeventSink, opts v1.CreateOptions) (result *v1alpha1.CloudeventSink, err error) {
+// Create takes the representation of a cloudeventSink and creates it.  Returns the server's representation of the cloudeventSink, and an error, if there is any.
+func (c *cloudeventSinks) Create(ctx context.Context, cloudeventSink *v1alpha1.CloudeventSink, opts v1.CreateOptions) (result *v1alpha1.CloudeventSink, err error) {
 	result = &v1alpha1.CloudeventSink{}
 	err = c.client.Post().
 		Namespace(c.ns).
-		Resource("simpledeployments").
+		Resource("cloudeventsinks").
 		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(simpleDeployment).
+		Body(cloudeventSink).
 		Do(ctx).
 		Into(result)
 	return
 }
 
-// Update takes the representation of a simpleDeployment and updates it. Returns the server's representation of the simpleDeployment, and an error, if there is any.
-func (c *simpleDeployments) Update(ctx context.Context, simpleDeployment *v1alpha1.CloudeventSink, opts v1.UpdateOptions) (result *v1alpha1.CloudeventSink, err error) {
+// Update takes the representation of a cloudeventSink and updates it. Returns the server's representation of the cloudeventSink, and an error, if there is any.
+func (c *cloudeventSinks) Update(ctx context.Context, cloudeventSink *v1alpha1.CloudeventSink, opts v1.UpdateOptions) (result *v1alpha1.CloudeventSink, err error) {
 	result = &v1alpha1.CloudeventSink{}
 	err = c.client.Put().
 		Namespace(c.ns).
-		Resource("simpledeployments").
-		Name(simpleDeployment.Name).
+		Resource("cloudeventsinks").
+		Name(cloudeventSink.Name).
 		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(simpleDeployment).
+		Body(cloudeventSink).
 		Do(ctx).
 		Into(result)
 	return
@@ -138,25 +138,25 @@ func (c *simpleDeployments) Update(ctx context.Context, simpleDeployment *v1alph
 
 // UpdateStatus was generated because the type contains a Status member.
 // Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *simpleDeployments) UpdateStatus(ctx context.Context, simpleDeployment *v1alpha1.CloudeventSink, opts v1.UpdateOptions) (result *v1alpha1.CloudeventSink, err error) {
+func (c *cloudeventSinks) UpdateStatus(ctx context.Context, cloudeventSink *v1alpha1.CloudeventSink, opts v1.UpdateOptions) (result *v1alpha1.CloudeventSink, err error) {
 	result = &v1alpha1.CloudeventSink{}
 	err = c.client.Put().
 		Namespace(c.ns).
-		Resource("simpledeployments").
-		Name(simpleDeployment.Name).
+		Resource("cloudeventsinks").
+		Name(cloudeventSink.Name).
 		SubResource("status").
 		VersionedParams(&opts, scheme.ParameterCodec).
-		Body(simpleDeployment).
+		Body(cloudeventSink).
 		Do(ctx).
 		Into(result)
 	return
 }
 
-// Delete takes name of the simpleDeployment and deletes it. Returns an error if one occurs.
-func (c *simpleDeployments) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
+// Delete takes name of the cloudeventSink and deletes it. Returns an error if one occurs.
+func (c *cloudeventSinks) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	return c.client.Delete().
 		Namespace(c.ns).
-		Resource("simpledeployments").
+		Resource("cloudeventsinks").
 		Name(name).
 		Body(&opts).
 		Do(ctx).
@@ -164,14 +164,14 @@ func (c *simpleDeployments) Delete(ctx context.Context, name string, opts v1.Del
 }
 
 // DeleteCollection deletes a collection of objects.
-func (c *simpleDeployments) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
+func (c *cloudeventSinks) DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error {
 	var timeout time.Duration
 	if listOpts.TimeoutSeconds != nil {
 		timeout = time.Duration(*listOpts.TimeoutSeconds) * time.Second
 	}
 	return c.client.Delete().
 		Namespace(c.ns).
-		Resource("simpledeployments").
+		Resource("cloudeventsinks").
 		VersionedParams(&listOpts, scheme.ParameterCodec).
 		Timeout(timeout).
 		Body(&opts).
@@ -179,12 +179,12 @@ func (c *simpleDeployments) DeleteCollection(ctx context.Context, opts v1.Delete
 		Error()
 }
 
-// Patch applies the patch and returns the patched simpleDeployment.
-func (c *simpleDeployments) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.CloudeventSink, err error) {
+// Patch applies the patch and returns the patched cloudeventSink.
+func (c *cloudeventSinks) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.CloudeventSink, err error) {
 	result = &v1alpha1.CloudeventSink{}
 	err = c.client.Patch(pt).
 		Namespace(c.ns).
-		Resource("simpledeployments").
+		Resource("cloudeventsinks").
 		Name(name).
 		SubResource(subresources...).
 		VersionedParams(&opts, scheme.ParameterCodec).

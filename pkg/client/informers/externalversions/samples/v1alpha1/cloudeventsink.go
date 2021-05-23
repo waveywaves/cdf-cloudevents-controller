@@ -32,43 +32,43 @@ import (
 	cache "k8s.io/client-go/tools/cache"
 )
 
-// SimpleDeploymentInformer provides access to a shared informer and lister for
-// SimpleDeployments.
-type SimpleDeploymentInformer interface {
+// CloudeventSinkInformer provides access to a shared informer and lister for
+// CloudeventSinks.
+type CloudeventSinkInformer interface {
 	Informer() cache.SharedIndexInformer
-	Lister() v1alpha1.SimpleDeploymentLister
+	Lister() v1alpha1.CloudeventSinkLister
 }
 
-type simpleDeploymentInformer struct {
+type cloudeventSinkInformer struct {
 	factory          internalinterfaces.SharedInformerFactory
 	tweakListOptions internalinterfaces.TweakListOptionsFunc
 	namespace        string
 }
 
-// NewSimpleDeploymentInformer constructs a new informer for CloudeventSink type.
+// NewCloudeventSinkInformer constructs a new informer for CloudeventSink type.
 // Always prefer using an informer factory to get a shared informer instead of getting an independent
 // one. This reduces memory footprint and number of connections to the server.
-func NewSimpleDeploymentInformer(client versioned.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers) cache.SharedIndexInformer {
-	return NewFilteredSimpleDeploymentInformer(client, namespace, resyncPeriod, indexers, nil)
+func NewCloudeventSinkInformer(client versioned.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers) cache.SharedIndexInformer {
+	return NewFilteredCloudeventSinkInformer(client, namespace, resyncPeriod, indexers, nil)
 }
 
-// NewFilteredSimpleDeploymentInformer constructs a new informer for CloudeventSink type.
+// NewFilteredCloudeventSinkInformer constructs a new informer for CloudeventSink type.
 // Always prefer using an informer factory to get a shared informer instead of getting an independent
 // one. This reduces memory footprint and number of connections to the server.
-func NewFilteredSimpleDeploymentInformer(client versioned.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers, tweakListOptions internalinterfaces.TweakListOptionsFunc) cache.SharedIndexInformer {
+func NewFilteredCloudeventSinkInformer(client versioned.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers, tweakListOptions internalinterfaces.TweakListOptionsFunc) cache.SharedIndexInformer {
 	return cache.NewSharedIndexInformer(
 		&cache.ListWatch{
 			ListFunc: func(options v1.ListOptions) (runtime.Object, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.SamplesV1alpha1().SimpleDeployments(namespace).List(context.TODO(), options)
+				return client.CloudeventsV1alpha1().CloudeventSinks(namespace).List(context.TODO(), options)
 			},
 			WatchFunc: func(options v1.ListOptions) (watch.Interface, error) {
 				if tweakListOptions != nil {
 					tweakListOptions(&options)
 				}
-				return client.SamplesV1alpha1().SimpleDeployments(namespace).Watch(context.TODO(), options)
+				return client.CloudeventsV1alpha1().CloudeventSinks(namespace).Watch(context.TODO(), options)
 			},
 		},
 		&samplesv1alpha1.CloudeventSink{},
@@ -77,14 +77,14 @@ func NewFilteredSimpleDeploymentInformer(client versioned.Interface, namespace s
 	)
 }
 
-func (f *simpleDeploymentInformer) defaultInformer(client versioned.Interface, resyncPeriod time.Duration) cache.SharedIndexInformer {
-	return NewFilteredSimpleDeploymentInformer(client, f.namespace, resyncPeriod, cache.Indexers{cache.NamespaceIndex: cache.MetaNamespaceIndexFunc}, f.tweakListOptions)
+func (f *cloudeventSinkInformer) defaultInformer(client versioned.Interface, resyncPeriod time.Duration) cache.SharedIndexInformer {
+	return NewFilteredCloudeventSinkInformer(client, f.namespace, resyncPeriod, cache.Indexers{cache.NamespaceIndex: cache.MetaNamespaceIndexFunc}, f.tweakListOptions)
 }
 
-func (f *simpleDeploymentInformer) Informer() cache.SharedIndexInformer {
+func (f *cloudeventSinkInformer) Informer() cache.SharedIndexInformer {
 	return f.factory.InformerFor(&samplesv1alpha1.CloudeventSink{}, f.defaultInformer)
 }
 
-func (f *simpleDeploymentInformer) Lister() v1alpha1.SimpleDeploymentLister {
-	return v1alpha1.NewSimpleDeploymentLister(f.Informer().GetIndexer())
+func (f *cloudeventSinkInformer) Lister() v1alpha1.CloudeventSinkLister {
+	return v1alpha1.NewCloudeventSinkLister(f.Informer().GetIndexer())
 }
