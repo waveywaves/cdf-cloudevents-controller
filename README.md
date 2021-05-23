@@ -1,4 +1,4 @@
-# Cloudevents POC Controller
+# Cloudevents Controller
 
 Create cloudevent sinks and conversion sources which map to those particular sinks.
 
@@ -10,7 +10,7 @@ Create cloudevent sinks and conversion sources which map to those particular sin
 
 ### CloudeventSink 
 
-`CloudeventSink` creates a `Deployment` (which backs the sink) and a corresponding `Service` 
+`CloudeventSink` creates a `Pod` (which backs the sink) and a corresponding `Service` 
 which can be used wherever we can give a cloudevents sink url.
 
 ```yaml

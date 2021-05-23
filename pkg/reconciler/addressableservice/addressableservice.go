@@ -28,8 +28,8 @@ import (
 	"knative.dev/pkg/network"
 	"knative.dev/pkg/reconciler"
 	"knative.dev/pkg/tracker"
-	samplesv1alpha1 "knative.dev/sample-controller/pkg/apis/samples/v1alpha1"
-	addressableservicereconciler "knative.dev/sample-controller/pkg/client/injection/reconciler/samples/v1alpha1/addressableservice"
+	samplesv1alpha1 "github.com/waveywaves/cloudevents-controller/pkg/apis/samples/v1alpha1"
+	addressableservicereconciler "github.com/waveywaves/cloudevents-controller/pkg/client/injection/reconciler/samples/v1alpha1/addressableservice"
 )
 
 // Reconciler implements addressableservicereconciler.Interface for

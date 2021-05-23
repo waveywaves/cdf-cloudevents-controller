@@ -21,10 +21,10 @@ package fake
 import (
 	context "context"
 
+	fake "github.com/waveywaves/cloudevents-controller/pkg/client/injection/informers/factory/fake"
+	simpledeployment "github.com/waveywaves/cloudevents-controller/pkg/client/injection/informers/samples/v1alpha1/simpledeployment"
 	controller "knative.dev/pkg/controller"
 	injection "knative.dev/pkg/injection"
-	fake "knative.dev/sample-controller/pkg/client/injection/informers/factory/fake"
-	simpledeployment "knative.dev/sample-controller/pkg/client/injection/informers/samples/v1alpha1/simpledeployment"
 )
 
 var Get = simpledeployment.Get

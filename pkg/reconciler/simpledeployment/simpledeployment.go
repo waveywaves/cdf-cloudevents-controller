@@ -29,9 +29,9 @@ import (
 	"knative.dev/pkg/kmeta"
 	"knative.dev/pkg/logging"
 	"knative.dev/pkg/reconciler"
-	"knative.dev/sample-controller/pkg/apis/samples"
-	samplesv1alpha1 "knative.dev/sample-controller/pkg/apis/samples/v1alpha1"
-	simpledeploymentreconciler "knative.dev/sample-controller/pkg/client/injection/reconciler/samples/v1alpha1/simpledeployment"
+	"github.com/waveywaves/cloudevents-controller/pkg/apis/samples"
+	samplesv1alpha1 "github.com/waveywaves/cloudevents-controller/pkg/apis/samples/v1alpha1"
+	simpledeploymentreconciler "github.com/waveywaves/cloudevents-controller/pkg/client/injection/reconciler/samples/v1alpha1/simpledeployment"
 )
 
 // podOwnerLabelKey is the key to a label that points to the owner (creator) of the

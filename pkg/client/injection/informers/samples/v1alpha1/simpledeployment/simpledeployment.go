@@ -21,11 +21,11 @@ package simpledeployment
 import (
 	context "context"
 
+	v1alpha1 "github.com/waveywaves/cloudevents-controller/pkg/client/informers/externalversions/samples/v1alpha1"
+	factory "github.com/waveywaves/cloudevents-controller/pkg/client/injection/informers/factory"
 	controller "knative.dev/pkg/controller"
 	injection "knative.dev/pkg/injection"
 	logging "knative.dev/pkg/logging"
-	v1alpha1 "knative.dev/sample-controller/pkg/client/informers/externalversions/samples/v1alpha1"
-	factory "knative.dev/sample-controller/pkg/client/injection/informers/factory"
 )
 
 func init() {
@@ -46,7 +46,7 @@ func Get(ctx context.Context) v1alpha1.SimpleDeploymentInformer {
 	untyped := ctx.Value(Key{})
 	if untyped == nil {
 		logging.FromContext(ctx).Panic(
-			"Unable to fetch knative.dev/sample-controller/pkg/client/informers/externalversions/samples/v1alpha1.SimpleDeploymentInformer from context.")
+			"Unable to fetch github.com/waveywaves/cloudevents-controller/pkg/client/informers/externalversions/samples/v1alpha1.SimpleDeploymentInformer from context.")
 	}
 	return untyped.(v1alpha1.SimpleDeploymentInformer)
 }

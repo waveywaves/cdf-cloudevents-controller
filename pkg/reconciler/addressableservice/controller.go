@@ -27,8 +27,8 @@ import (
 	"knative.dev/pkg/logging"
 
 	svcinformer "knative.dev/pkg/client/injection/kube/informers/core/v1/service"
-	addressableserviceinformer "knative.dev/sample-controller/pkg/client/injection/informers/samples/v1alpha1/addressableservice"
-	addressableservicereconciler "knative.dev/sample-controller/pkg/client/injection/reconciler/samples/v1alpha1/addressableservice"
+	addressableserviceinformer "github.com/waveywaves/cloudevents-controller/pkg/client/injection/informers/samples/v1alpha1/addressableservice"
+	addressableservicereconciler "github.com/waveywaves/cloudevents-controller/pkg/client/injection/reconciler/samples/v1alpha1/addressableservice"
 )
 
 // NewController creates a Reconciler and returns the result of NewImpl.

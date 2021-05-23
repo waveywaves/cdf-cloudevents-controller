@@ -25,8 +25,8 @@ import (
 
 	kubeclient "knative.dev/pkg/client/injection/kube/client"
 	podinformer "knative.dev/pkg/client/injection/kube/informers/core/v1/pod"
-	simpledeploymentinformer "knative.dev/sample-controller/pkg/client/injection/informers/samples/v1alpha1/simpledeployment"
-	simpledeploymentreconciler "knative.dev/sample-controller/pkg/client/injection/reconciler/samples/v1alpha1/simpledeployment"
+	simpledeploymentinformer "github.com/waveywaves/cloudevents-controller/pkg/client/injection/informers/samples/v1alpha1/simpledeployment"
+	simpledeploymentreconciler "github.com/waveywaves/cloudevents-controller/pkg/client/injection/reconciler/samples/v1alpha1/simpledeployment"
 )
 
 // NewController creates a Reconciler and returns the result of NewImpl.

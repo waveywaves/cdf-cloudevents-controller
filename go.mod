@@ -1,4 +1,4 @@
-module knative.dev/sample-controller
+module github.com/waveywaves/cloudevents-controller
 
 go 1.15
 

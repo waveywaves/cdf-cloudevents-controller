@@ -21,10 +21,10 @@ package fake
 import (
 	context "context"
 
+	fake "github.com/waveywaves/cloudevents-controller/pkg/client/injection/informers/factory/fake"
+	addressableservice "github.com/waveywaves/cloudevents-controller/pkg/client/injection/informers/samples/v1alpha1/addressableservice"
 	controller "knative.dev/pkg/controller"
 	injection "knative.dev/pkg/injection"
-	fake "knative.dev/sample-controller/pkg/client/injection/informers/factory/fake"
-	addressableservice "knative.dev/sample-controller/pkg/client/injection/informers/samples/v1alpha1/addressableservice"
 )
 
 var Get = addressableservice.Get

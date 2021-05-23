@@ -21,11 +21,11 @@ package filtered
 import (
 	context "context"
 
+	v1alpha1 "github.com/waveywaves/cloudevents-controller/pkg/client/informers/externalversions/samples/v1alpha1"
+	filtered "github.com/waveywaves/cloudevents-controller/pkg/client/injection/informers/factory/filtered"
 	controller "knative.dev/pkg/controller"
 	injection "knative.dev/pkg/injection"
 	logging "knative.dev/pkg/logging"
-	v1alpha1 "knative.dev/sample-controller/pkg/client/informers/externalversions/samples/v1alpha1"
-	filtered "knative.dev/sample-controller/pkg/client/injection/informers/factory/filtered"
 )
 
 func init() {
@@ -59,7 +59,7 @@ func Get(ctx context.Context, selector string) v1alpha1.SimpleDeploymentInformer
 	untyped := ctx.Value(Key{Selector: selector})
 	if untyped == nil {
 		logging.FromContext(ctx).Panicf(
-			"Unable to fetch knative.dev/sample-controller/pkg/client/informers/externalversions/samples/v1alpha1.SimpleDeploymentInformer with selector %s from context.", selector)
+			"Unable to fetch github.com/waveywaves/cloudevents-controller/pkg/client/informers/externalversions/samples/v1alpha1.SimpleDeploymentInformer with selector %s from context.", selector)
 	}
 	return untyped.(v1alpha1.SimpleDeploymentInformer)
 }
