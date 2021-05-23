@@ -1,5 +1,5 @@
 /*
-Copyright 2019 The Knative Authors
+Copyright 2019 waveywaves
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ package main
 import (
 	// The set of controllers this controller process runs.
 	"github.com/waveywaves/cloudevents-controller/pkg/reconciler/addressableservice"
-	"github.com/waveywaves/cloudevents-controller/pkg/reconciler/simpledeployment"
+	"github.com/waveywaves/cloudevents-controller/pkg/reconciler/cloudeventsink"
 
 	// This defines the shared main for injected controllers.
 	"knative.dev/pkg/injection/sharedmain"
@@ -28,6 +28,6 @@ import (
 func main() {
 	sharedmain.Main("controller",
 		addressableservice.NewController,
-		simpledeployment.NewController,
+		cloudeventsink.NewController,
 	)
 }

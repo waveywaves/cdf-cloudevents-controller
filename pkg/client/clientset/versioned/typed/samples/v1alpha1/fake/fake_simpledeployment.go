@@ -1,5 +1,5 @@
 /*
-Copyright 2020 The Knative Authors
+Copyright 2020 waveywaves
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -38,17 +38,17 @@ type FakeSimpleDeployments struct {
 
 var simpledeploymentsResource = schema.GroupVersionResource{Group: "samples.knative.dev", Version: "v1alpha1", Resource: "simpledeployments"}
 
-var simpledeploymentsKind = schema.GroupVersionKind{Group: "samples.knative.dev", Version: "v1alpha1", Kind: "SimpleDeployment"}
+var simpledeploymentsKind = schema.GroupVersionKind{Group: "samples.knative.dev", Version: "v1alpha1", Kind: "CloudeventSink"}
 
 // Get takes name of the simpleDeployment, and returns the corresponding simpleDeployment object, and an error if there is any.
-func (c *FakeSimpleDeployments) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.SimpleDeployment, err error) {
+func (c *FakeSimpleDeployments) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.CloudeventSink, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewGetAction(simpledeploymentsResource, c.ns, name), &v1alpha1.SimpleDeployment{})
+		Invokes(testing.NewGetAction(simpledeploymentsResource, c.ns, name), &v1alpha1.CloudeventSink{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.SimpleDeployment), err
+	return obj.(*v1alpha1.CloudeventSink), err
 }
 
 // List takes label and field selectors, and returns the list of SimpleDeployments that match those selectors.
@@ -81,43 +81,43 @@ func (c *FakeSimpleDeployments) Watch(ctx context.Context, opts v1.ListOptions) 
 }
 
 // Create takes the representation of a simpleDeployment and creates it.  Returns the server's representation of the simpleDeployment, and an error, if there is any.
-func (c *FakeSimpleDeployments) Create(ctx context.Context, simpleDeployment *v1alpha1.SimpleDeployment, opts v1.CreateOptions) (result *v1alpha1.SimpleDeployment, err error) {
+func (c *FakeSimpleDeployments) Create(ctx context.Context, simpleDeployment *v1alpha1.CloudeventSink, opts v1.CreateOptions) (result *v1alpha1.CloudeventSink, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewCreateAction(simpledeploymentsResource, c.ns, simpleDeployment), &v1alpha1.SimpleDeployment{})
+		Invokes(testing.NewCreateAction(simpledeploymentsResource, c.ns, simpleDeployment), &v1alpha1.CloudeventSink{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.SimpleDeployment), err
+	return obj.(*v1alpha1.CloudeventSink), err
 }
 
 // Update takes the representation of a simpleDeployment and updates it. Returns the server's representation of the simpleDeployment, and an error, if there is any.
-func (c *FakeSimpleDeployments) Update(ctx context.Context, simpleDeployment *v1alpha1.SimpleDeployment, opts v1.UpdateOptions) (result *v1alpha1.SimpleDeployment, err error) {
+func (c *FakeSimpleDeployments) Update(ctx context.Context, simpleDeployment *v1alpha1.CloudeventSink, opts v1.UpdateOptions) (result *v1alpha1.CloudeventSink, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateAction(simpledeploymentsResource, c.ns, simpleDeployment), &v1alpha1.SimpleDeployment{})
+		Invokes(testing.NewUpdateAction(simpledeploymentsResource, c.ns, simpleDeployment), &v1alpha1.CloudeventSink{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.SimpleDeployment), err
+	return obj.(*v1alpha1.CloudeventSink), err
 }
 
 // UpdateStatus was generated because the type contains a Status member.
 // Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *FakeSimpleDeployments) UpdateStatus(ctx context.Context, simpleDeployment *v1alpha1.SimpleDeployment, opts v1.UpdateOptions) (*v1alpha1.SimpleDeployment, error) {
+func (c *FakeSimpleDeployments) UpdateStatus(ctx context.Context, simpleDeployment *v1alpha1.CloudeventSink, opts v1.UpdateOptions) (*v1alpha1.CloudeventSink, error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewUpdateSubresourceAction(simpledeploymentsResource, "status", c.ns, simpleDeployment), &v1alpha1.SimpleDeployment{})
+		Invokes(testing.NewUpdateSubresourceAction(simpledeploymentsResource, "status", c.ns, simpleDeployment), &v1alpha1.CloudeventSink{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.SimpleDeployment), err
+	return obj.(*v1alpha1.CloudeventSink), err
 }
 
 // Delete takes name of the simpleDeployment and deletes it. Returns an error if one occurs.
 func (c *FakeSimpleDeployments) Delete(ctx context.Context, name string, opts v1.DeleteOptions) error {
 	_, err := c.Fake.
-		Invokes(testing.NewDeleteAction(simpledeploymentsResource, c.ns, name), &v1alpha1.SimpleDeployment{})
+		Invokes(testing.NewDeleteAction(simpledeploymentsResource, c.ns, name), &v1alpha1.CloudeventSink{})
 
 	return err
 }
@@ -131,12 +131,12 @@ func (c *FakeSimpleDeployments) DeleteCollection(ctx context.Context, opts v1.De
 }
 
 // Patch applies the patch and returns the patched simpleDeployment.
-func (c *FakeSimpleDeployments) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.SimpleDeployment, err error) {
+func (c *FakeSimpleDeployments) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.CloudeventSink, err error) {
 	obj, err := c.Fake.
-		Invokes(testing.NewPatchSubresourceAction(simpledeploymentsResource, c.ns, name, pt, data, subresources...), &v1alpha1.SimpleDeployment{})
+		Invokes(testing.NewPatchSubresourceAction(simpledeploymentsResource, c.ns, name, pt, data, subresources...), &v1alpha1.CloudeventSink{})
 
 	if obj == nil {
 		return nil, err
 	}
-	return obj.(*v1alpha1.SimpleDeployment), err
+	return obj.(*v1alpha1.CloudeventSink), err
 }

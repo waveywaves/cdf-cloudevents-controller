@@ -1,5 +1,5 @@
 /*
-Copyright 2021 The Knative Authors
+Copyright 2021 waveywaves
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ import (
 // schema is a tool to dump the schema for Eventing resources.
 func main() {
 	registry.Register(&v1alpha1.AddressableService{})
-	registry.Register(&v1alpha1.SimpleDeployment{})
+	registry.Register(&v1alpha1.CloudeventSink{})
 
 	if err := commands.New("github.com/waveywaves/cloudevents-controller").Execute(); err != nil {
 		log.Fatal("Error during command execution: ", err)

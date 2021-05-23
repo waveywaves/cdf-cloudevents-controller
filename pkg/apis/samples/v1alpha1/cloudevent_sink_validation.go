@@ -1,5 +1,5 @@
 /*
-Copyright 2020 The Knative Authors
+Copyright 2020 waveywaves
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -18,9 +18,19 @@ package v1alpha1
 
 import (
 	"context"
+
+	"knative.dev/pkg/apis"
 )
 
-// SetDefaults implements apis.Defaultable
-func (d *SimpleDeployment) SetDefaults(ctx context.Context) {
-	// Nothing to default.
+// Validate implements apis.Validatable
+func (d *CloudeventSink) Validate(ctx context.Context) *apis.FieldError {
+	return d.Spec.Validate(ctx).ViaField("spec")
+}
+
+// Validate implements apis.Validatable
+func (ds *CloudeventSinkSpec) Validate(ctx context.Context) *apis.FieldError {
+	if ds.Image == "" {
+		return apis.ErrMissingField("image")
+	}
+	return nil
 }

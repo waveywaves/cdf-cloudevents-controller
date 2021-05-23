@@ -1,5 +1,5 @@
 /*
-Copyright 2020 The Knative Authors
+Copyright 2020 waveywaves
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -36,17 +36,17 @@ type SimpleDeploymentsGetter interface {
 	SimpleDeployments(namespace string) SimpleDeploymentInterface
 }
 
-// SimpleDeploymentInterface has methods to work with SimpleDeployment resources.
+// SimpleDeploymentInterface has methods to work with CloudeventSink resources.
 type SimpleDeploymentInterface interface {
-	Create(ctx context.Context, simpleDeployment *v1alpha1.SimpleDeployment, opts v1.CreateOptions) (*v1alpha1.SimpleDeployment, error)
-	Update(ctx context.Context, simpleDeployment *v1alpha1.SimpleDeployment, opts v1.UpdateOptions) (*v1alpha1.SimpleDeployment, error)
-	UpdateStatus(ctx context.Context, simpleDeployment *v1alpha1.SimpleDeployment, opts v1.UpdateOptions) (*v1alpha1.SimpleDeployment, error)
+	Create(ctx context.Context, simpleDeployment *v1alpha1.CloudeventSink, opts v1.CreateOptions) (*v1alpha1.CloudeventSink, error)
+	Update(ctx context.Context, simpleDeployment *v1alpha1.CloudeventSink, opts v1.UpdateOptions) (*v1alpha1.CloudeventSink, error)
+	UpdateStatus(ctx context.Context, simpleDeployment *v1alpha1.CloudeventSink, opts v1.UpdateOptions) (*v1alpha1.CloudeventSink, error)
 	Delete(ctx context.Context, name string, opts v1.DeleteOptions) error
 	DeleteCollection(ctx context.Context, opts v1.DeleteOptions, listOpts v1.ListOptions) error
-	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.SimpleDeployment, error)
+	Get(ctx context.Context, name string, opts v1.GetOptions) (*v1alpha1.CloudeventSink, error)
 	List(ctx context.Context, opts v1.ListOptions) (*v1alpha1.SimpleDeploymentList, error)
 	Watch(ctx context.Context, opts v1.ListOptions) (watch.Interface, error)
-	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.SimpleDeployment, err error)
+	Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.CloudeventSink, err error)
 	SimpleDeploymentExpansion
 }
 
@@ -65,8 +65,8 @@ func newSimpleDeployments(c *SamplesV1alpha1Client, namespace string) *simpleDep
 }
 
 // Get takes name of the simpleDeployment, and returns the corresponding simpleDeployment object, and an error if there is any.
-func (c *simpleDeployments) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.SimpleDeployment, err error) {
-	result = &v1alpha1.SimpleDeployment{}
+func (c *simpleDeployments) Get(ctx context.Context, name string, options v1.GetOptions) (result *v1alpha1.CloudeventSink, err error) {
+	result = &v1alpha1.CloudeventSink{}
 	err = c.client.Get().
 		Namespace(c.ns).
 		Resource("simpledeployments").
@@ -110,8 +110,8 @@ func (c *simpleDeployments) Watch(ctx context.Context, opts v1.ListOptions) (wat
 }
 
 // Create takes the representation of a simpleDeployment and creates it.  Returns the server's representation of the simpleDeployment, and an error, if there is any.
-func (c *simpleDeployments) Create(ctx context.Context, simpleDeployment *v1alpha1.SimpleDeployment, opts v1.CreateOptions) (result *v1alpha1.SimpleDeployment, err error) {
-	result = &v1alpha1.SimpleDeployment{}
+func (c *simpleDeployments) Create(ctx context.Context, simpleDeployment *v1alpha1.CloudeventSink, opts v1.CreateOptions) (result *v1alpha1.CloudeventSink, err error) {
+	result = &v1alpha1.CloudeventSink{}
 	err = c.client.Post().
 		Namespace(c.ns).
 		Resource("simpledeployments").
@@ -123,8 +123,8 @@ func (c *simpleDeployments) Create(ctx context.Context, simpleDeployment *v1alph
 }
 
 // Update takes the representation of a simpleDeployment and updates it. Returns the server's representation of the simpleDeployment, and an error, if there is any.
-func (c *simpleDeployments) Update(ctx context.Context, simpleDeployment *v1alpha1.SimpleDeployment, opts v1.UpdateOptions) (result *v1alpha1.SimpleDeployment, err error) {
-	result = &v1alpha1.SimpleDeployment{}
+func (c *simpleDeployments) Update(ctx context.Context, simpleDeployment *v1alpha1.CloudeventSink, opts v1.UpdateOptions) (result *v1alpha1.CloudeventSink, err error) {
+	result = &v1alpha1.CloudeventSink{}
 	err = c.client.Put().
 		Namespace(c.ns).
 		Resource("simpledeployments").
@@ -138,8 +138,8 @@ func (c *simpleDeployments) Update(ctx context.Context, simpleDeployment *v1alph
 
 // UpdateStatus was generated because the type contains a Status member.
 // Add a +genclient:noStatus comment above the type to avoid generating UpdateStatus().
-func (c *simpleDeployments) UpdateStatus(ctx context.Context, simpleDeployment *v1alpha1.SimpleDeployment, opts v1.UpdateOptions) (result *v1alpha1.SimpleDeployment, err error) {
-	result = &v1alpha1.SimpleDeployment{}
+func (c *simpleDeployments) UpdateStatus(ctx context.Context, simpleDeployment *v1alpha1.CloudeventSink, opts v1.UpdateOptions) (result *v1alpha1.CloudeventSink, err error) {
+	result = &v1alpha1.CloudeventSink{}
 	err = c.client.Put().
 		Namespace(c.ns).
 		Resource("simpledeployments").
@@ -180,8 +180,8 @@ func (c *simpleDeployments) DeleteCollection(ctx context.Context, opts v1.Delete
 }
 
 // Patch applies the patch and returns the patched simpleDeployment.
-func (c *simpleDeployments) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.SimpleDeployment, err error) {
-	result = &v1alpha1.SimpleDeployment{}
+func (c *simpleDeployments) Patch(ctx context.Context, name string, pt types.PatchType, data []byte, opts v1.PatchOptions, subresources ...string) (result *v1alpha1.CloudeventSink, err error) {
+	result = &v1alpha1.CloudeventSink{}
 	err = c.client.Patch(pt).
 		Namespace(c.ns).
 		Resource("simpledeployments").

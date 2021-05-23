@@ -1,5 +1,5 @@
 /*
-Copyright 2019 The Knative Authors
+Copyright 2019 waveywaves
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -26,9 +26,9 @@ import (
 	"knative.dev/pkg/controller"
 	"knative.dev/pkg/logging"
 
-	svcinformer "knative.dev/pkg/client/injection/kube/informers/core/v1/service"
 	addressableserviceinformer "github.com/waveywaves/cloudevents-controller/pkg/client/injection/informers/samples/v1alpha1/addressableservice"
 	addressableservicereconciler "github.com/waveywaves/cloudevents-controller/pkg/client/injection/reconciler/samples/v1alpha1/addressableservice"
+	svcinformer "knative.dev/pkg/client/injection/kube/informers/core/v1/service"
 )
 
 // NewController creates a Reconciler and returns the result of NewImpl.

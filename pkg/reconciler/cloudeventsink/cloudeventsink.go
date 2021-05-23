@@ -1,5 +1,5 @@
 /*
-Copyright 2020 The Knative Authors
+Copyright 2020 waveywaves
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package simpledeployment
+package cloudeventsink
 
 import (
 	"context"
@@ -26,20 +26,20 @@ import (
 	"k8s.io/client-go/kubernetes"
 	corev1listers "k8s.io/client-go/listers/core/v1"
 
-	"knative.dev/pkg/kmeta"
-	"knative.dev/pkg/logging"
-	"knative.dev/pkg/reconciler"
 	"github.com/waveywaves/cloudevents-controller/pkg/apis/samples"
 	samplesv1alpha1 "github.com/waveywaves/cloudevents-controller/pkg/apis/samples/v1alpha1"
 	simpledeploymentreconciler "github.com/waveywaves/cloudevents-controller/pkg/client/injection/reconciler/samples/v1alpha1/simpledeployment"
+	"knative.dev/pkg/kmeta"
+	"knative.dev/pkg/logging"
+	"knative.dev/pkg/reconciler"
 )
 
 // podOwnerLabelKey is the key to a label that points to the owner (creator) of the
-// pod, allowing us to easily list all pods a single SimpleDeployment created.
+// pod, allowing us to easily list all pods a single CloudeventSink created.
 const podOwnerLabelKey = samples.GroupName + "/podOwner"
 
 // Reconciler implements simpledeploymentreconciler.Interface for
-// SimpleDeployment resources.
+// CloudeventSink resources.
 type Reconciler struct {
 	kubeclient kubernetes.Interface
 	podLister  corev1listers.PodLister
@@ -49,11 +49,11 @@ type Reconciler struct {
 var _ simpledeploymentreconciler.Interface = (*Reconciler)(nil)
 
 // ReconcileKind implements Interface.ReconcileKind.
-func (r *Reconciler) ReconcileKind(ctx context.Context, d *samplesv1alpha1.SimpleDeployment) reconciler.Event {
+func (r *Reconciler) ReconcileKind(ctx context.Context, d *samplesv1alpha1.CloudeventSink) reconciler.Event {
 	// This logger has all the context necessary to identify which resource is being reconciled.
 	logger := logging.FromContext(ctx)
 
-	// Get all the pods created by the current SimpleDeployment. The result is read from
+	// Get all the pods created by the current CloudeventSink. The result is read from
 	// cache (via the lister).
 	selector := labels.SelectorFromSet(labels.Set{
 		podOwnerLabelKey: d.Name,
@@ -117,7 +117,7 @@ func (r *Reconciler) ReconcileKind(ctx context.Context, d *samplesv1alpha1.Simpl
 
 // makePod generates a simple pod to be created in the given namespace with the given
 // image.
-func makePod(d *samplesv1alpha1.SimpleDeployment) *corev1.Pod {
+func makePod(d *samplesv1alpha1.CloudeventSink) *corev1.Pod {
 	return &corev1.Pod{
 		ObjectMeta: metav1.ObjectMeta{
 			Namespace:    d.Namespace,
@@ -127,7 +127,7 @@ func makePod(d *samplesv1alpha1.SimpleDeployment) *corev1.Pod {
 				podOwnerLabelKey: d.Name,
 			},
 			// The OwnerReference makes sure the pods get removed automatically once the
-			// SimpleDeployment is removed.
+			// CloudeventSink is removed.
 			OwnerReferences: []metav1.OwnerReference{*kmeta.NewControllerRef(d)},
 		},
 		Spec: corev1.PodSpec{

@@ -1,5 +1,5 @@
 /*
-Copyright 2020 The Knative Authors
+Copyright 2020 waveywaves
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import (
 type SimpleDeploymentLister interface {
 	// List lists all SimpleDeployments in the indexer.
 	// Objects returned here must be treated as read-only.
-	List(selector labels.Selector) (ret []*v1alpha1.SimpleDeployment, err error)
+	List(selector labels.Selector) (ret []*v1alpha1.CloudeventSink, err error)
 	// SimpleDeployments returns an object that can list and get SimpleDeployments.
 	SimpleDeployments(namespace string) SimpleDeploymentNamespaceLister
 	SimpleDeploymentListerExpansion
@@ -47,9 +47,9 @@ func NewSimpleDeploymentLister(indexer cache.Indexer) SimpleDeploymentLister {
 }
 
 // List lists all SimpleDeployments in the indexer.
-func (s *simpleDeploymentLister) List(selector labels.Selector) (ret []*v1alpha1.SimpleDeployment, err error) {
+func (s *simpleDeploymentLister) List(selector labels.Selector) (ret []*v1alpha1.CloudeventSink, err error) {
 	err = cache.ListAll(s.indexer, selector, func(m interface{}) {
-		ret = append(ret, m.(*v1alpha1.SimpleDeployment))
+		ret = append(ret, m.(*v1alpha1.CloudeventSink))
 	})
 	return ret, err
 }
@@ -64,10 +64,10 @@ func (s *simpleDeploymentLister) SimpleDeployments(namespace string) SimpleDeplo
 type SimpleDeploymentNamespaceLister interface {
 	// List lists all SimpleDeployments in the indexer for a given namespace.
 	// Objects returned here must be treated as read-only.
-	List(selector labels.Selector) (ret []*v1alpha1.SimpleDeployment, err error)
-	// Get retrieves the SimpleDeployment from the indexer for a given namespace and name.
+	List(selector labels.Selector) (ret []*v1alpha1.CloudeventSink, err error)
+	// Get retrieves the CloudeventSink from the indexer for a given namespace and name.
 	// Objects returned here must be treated as read-only.
-	Get(name string) (*v1alpha1.SimpleDeployment, error)
+	Get(name string) (*v1alpha1.CloudeventSink, error)
 	SimpleDeploymentNamespaceListerExpansion
 }
 
@@ -79,15 +79,15 @@ type simpleDeploymentNamespaceLister struct {
 }
 
 // List lists all SimpleDeployments in the indexer for a given namespace.
-func (s simpleDeploymentNamespaceLister) List(selector labels.Selector) (ret []*v1alpha1.SimpleDeployment, err error) {
+func (s simpleDeploymentNamespaceLister) List(selector labels.Selector) (ret []*v1alpha1.CloudeventSink, err error) {
 	err = cache.ListAllByNamespace(s.indexer, s.namespace, selector, func(m interface{}) {
-		ret = append(ret, m.(*v1alpha1.SimpleDeployment))
+		ret = append(ret, m.(*v1alpha1.CloudeventSink))
 	})
 	return ret, err
 }
 
-// Get retrieves the SimpleDeployment from the indexer for a given namespace and name.
-func (s simpleDeploymentNamespaceLister) Get(name string) (*v1alpha1.SimpleDeployment, error) {
+// Get retrieves the CloudeventSink from the indexer for a given namespace and name.
+func (s simpleDeploymentNamespaceLister) Get(name string) (*v1alpha1.CloudeventSink, error) {
 	obj, exists, err := s.indexer.GetByKey(s.namespace + "/" + name)
 	if err != nil {
 		return nil, err
@@ -95,5 +95,5 @@ func (s simpleDeploymentNamespaceLister) Get(name string) (*v1alpha1.SimpleDeplo
 	if !exists {
 		return nil, errors.NewNotFound(v1alpha1.Resource("simpledeployment"), name)
 	}
-	return obj.(*v1alpha1.SimpleDeployment), nil
+	return obj.(*v1alpha1.CloudeventSink), nil
 }

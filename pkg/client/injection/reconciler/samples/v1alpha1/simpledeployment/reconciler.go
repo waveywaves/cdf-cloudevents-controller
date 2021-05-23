@@ -1,5 +1,5 @@
 /*
-Copyright 2020 The Knative Authors
+Copyright 2020 waveywaves
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -42,50 +42,50 @@ import (
 )
 
 // Interface defines the strongly typed interfaces to be implemented by a
-// controller reconciling v1alpha1.SimpleDeployment.
+// controller reconciling v1alpha1.CloudeventSink.
 type Interface interface {
-	// ReconcileKind implements custom logic to reconcile v1alpha1.SimpleDeployment. Any changes
+	// ReconcileKind implements custom logic to reconcile v1alpha1.CloudeventSink. Any changes
 	// to the objects .Status or .Finalizers will be propagated to the stored
 	// object. It is recommended that implementors do not call any update calls
 	// for the Kind inside of ReconcileKind, it is the responsibility of the calling
 	// controller to propagate those properties. The resource passed to ReconcileKind
 	// will always have an empty deletion timestamp.
-	ReconcileKind(ctx context.Context, o *v1alpha1.SimpleDeployment) reconciler.Event
+	ReconcileKind(ctx context.Context, o *v1alpha1.CloudeventSink) reconciler.Event
 }
 
 // Finalizer defines the strongly typed interfaces to be implemented by a
-// controller finalizing v1alpha1.SimpleDeployment.
+// controller finalizing v1alpha1.CloudeventSink.
 type Finalizer interface {
-	// FinalizeKind implements custom logic to finalize v1alpha1.SimpleDeployment. Any changes
+	// FinalizeKind implements custom logic to finalize v1alpha1.CloudeventSink. Any changes
 	// to the objects .Status or .Finalizers will be ignored. Returning a nil or
 	// Normal type reconciler.Event will allow the finalizer to be deleted on
 	// the resource. The resource passed to FinalizeKind will always have a set
 	// deletion timestamp.
-	FinalizeKind(ctx context.Context, o *v1alpha1.SimpleDeployment) reconciler.Event
+	FinalizeKind(ctx context.Context, o *v1alpha1.CloudeventSink) reconciler.Event
 }
 
 // ReadOnlyInterface defines the strongly typed interfaces to be implemented by a
-// controller reconciling v1alpha1.SimpleDeployment if they want to process resources for which
+// controller reconciling v1alpha1.CloudeventSink if they want to process resources for which
 // they are not the leader.
 type ReadOnlyInterface interface {
-	// ObserveKind implements logic to observe v1alpha1.SimpleDeployment.
+	// ObserveKind implements logic to observe v1alpha1.CloudeventSink.
 	// This method should not write to the API.
-	ObserveKind(ctx context.Context, o *v1alpha1.SimpleDeployment) reconciler.Event
+	ObserveKind(ctx context.Context, o *v1alpha1.CloudeventSink) reconciler.Event
 }
 
 // ReadOnlyFinalizer defines the strongly typed interfaces to be implemented by a
-// controller finalizing v1alpha1.SimpleDeployment if they want to process tombstoned resources
+// controller finalizing v1alpha1.CloudeventSink if they want to process tombstoned resources
 // even when they are not the leader.  Due to the nature of how finalizers are handled
 // there are no guarantees that this will be called.
 type ReadOnlyFinalizer interface {
-	// ObserveFinalizeKind implements custom logic to observe the final state of v1alpha1.SimpleDeployment.
+	// ObserveFinalizeKind implements custom logic to observe the final state of v1alpha1.CloudeventSink.
 	// This method should not write to the API.
-	ObserveFinalizeKind(ctx context.Context, o *v1alpha1.SimpleDeployment) reconciler.Event
+	ObserveFinalizeKind(ctx context.Context, o *v1alpha1.CloudeventSink) reconciler.Event
 }
 
-type doReconcile func(ctx context.Context, o *v1alpha1.SimpleDeployment) reconciler.Event
+type doReconcile func(ctx context.Context, o *v1alpha1.CloudeventSink) reconciler.Event
 
-// reconcilerImpl implements controller.Reconciler for v1alpha1.SimpleDeployment resources.
+// reconcilerImpl implements controller.Reconciler for v1alpha1.CloudeventSink resources.
 type reconcilerImpl struct {
 	// LeaderAwareFuncs is inlined to help us implement reconciler.LeaderAware.
 	reconciler.LeaderAwareFuncs
@@ -313,7 +313,7 @@ func (r *reconcilerImpl) Reconcile(ctx context.Context, key string) error {
 	return nil
 }
 
-func (r *reconcilerImpl) updateStatus(ctx context.Context, existing *v1alpha1.SimpleDeployment, desired *v1alpha1.SimpleDeployment) error {
+func (r *reconcilerImpl) updateStatus(ctx context.Context, existing *v1alpha1.CloudeventSink, desired *v1alpha1.CloudeventSink) error {
 	existing = existing.DeepCopy()
 	return reconciler.RetryUpdateConflicts(func(attempts int) (err error) {
 		// The first iteration tries to use the injectionInformer's state, subsequent attempts fetch the latest state via API.
@@ -348,7 +348,7 @@ func (r *reconcilerImpl) updateStatus(ctx context.Context, existing *v1alpha1.Si
 // updateFinalizersFiltered will update the Finalizers of the resource.
 // TODO: this method could be generic and sync all finalizers. For now it only
 // updates defaultFinalizerName or its override.
-func (r *reconcilerImpl) updateFinalizersFiltered(ctx context.Context, resource *v1alpha1.SimpleDeployment) (*v1alpha1.SimpleDeployment, error) {
+func (r *reconcilerImpl) updateFinalizersFiltered(ctx context.Context, resource *v1alpha1.CloudeventSink) (*v1alpha1.CloudeventSink, error) {
 
 	getter := r.Lister.SimpleDeployments(resource.Namespace)
 
@@ -409,7 +409,7 @@ func (r *reconcilerImpl) updateFinalizersFiltered(ctx context.Context, resource 
 	return updated, err
 }
 
-func (r *reconcilerImpl) setFinalizerIfFinalizer(ctx context.Context, resource *v1alpha1.SimpleDeployment) (*v1alpha1.SimpleDeployment, error) {
+func (r *reconcilerImpl) setFinalizerIfFinalizer(ctx context.Context, resource *v1alpha1.CloudeventSink) (*v1alpha1.CloudeventSink, error) {
 	if _, ok := r.reconciler.(Finalizer); !ok {
 		return resource, nil
 	}
@@ -427,7 +427,7 @@ func (r *reconcilerImpl) setFinalizerIfFinalizer(ctx context.Context, resource *
 	return r.updateFinalizersFiltered(ctx, resource)
 }
 
-func (r *reconcilerImpl) clearFinalizer(ctx context.Context, resource *v1alpha1.SimpleDeployment, reconcileEvent reconciler.Event) (*v1alpha1.SimpleDeployment, error) {
+func (r *reconcilerImpl) clearFinalizer(ctx context.Context, resource *v1alpha1.CloudeventSink, reconcileEvent reconciler.Event) (*v1alpha1.CloudeventSink, error) {
 	if _, ok := r.reconciler.(Finalizer); !ok {
 		return resource, nil
 	}

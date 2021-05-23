@@ -1,5 +1,5 @@
 /*
-Copyright 2020 The Knative Authors
+Copyright 2020 waveywaves
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -45,14 +45,14 @@ type simpleDeploymentInformer struct {
 	namespace        string
 }
 
-// NewSimpleDeploymentInformer constructs a new informer for SimpleDeployment type.
+// NewSimpleDeploymentInformer constructs a new informer for CloudeventSink type.
 // Always prefer using an informer factory to get a shared informer instead of getting an independent
 // one. This reduces memory footprint and number of connections to the server.
 func NewSimpleDeploymentInformer(client versioned.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers) cache.SharedIndexInformer {
 	return NewFilteredSimpleDeploymentInformer(client, namespace, resyncPeriod, indexers, nil)
 }
 
-// NewFilteredSimpleDeploymentInformer constructs a new informer for SimpleDeployment type.
+// NewFilteredSimpleDeploymentInformer constructs a new informer for CloudeventSink type.
 // Always prefer using an informer factory to get a shared informer instead of getting an independent
 // one. This reduces memory footprint and number of connections to the server.
 func NewFilteredSimpleDeploymentInformer(client versioned.Interface, namespace string, resyncPeriod time.Duration, indexers cache.Indexers, tweakListOptions internalinterfaces.TweakListOptionsFunc) cache.SharedIndexInformer {
@@ -71,7 +71,7 @@ func NewFilteredSimpleDeploymentInformer(client versioned.Interface, namespace s
 				return client.SamplesV1alpha1().SimpleDeployments(namespace).Watch(context.TODO(), options)
 			},
 		},
-		&samplesv1alpha1.SimpleDeployment{},
+		&samplesv1alpha1.CloudeventSink{},
 		resyncPeriod,
 		indexers,
 	)
@@ -82,7 +82,7 @@ func (f *simpleDeploymentInformer) defaultInformer(client versioned.Interface, r
 }
 
 func (f *simpleDeploymentInformer) Informer() cache.SharedIndexInformer {
-	return f.factory.InformerFor(&samplesv1alpha1.SimpleDeployment{}, f.defaultInformer)
+	return f.factory.InformerFor(&samplesv1alpha1.CloudeventSink{}, f.defaultInformer)
 }
 
 func (f *simpleDeploymentInformer) Lister() v1alpha1.SimpleDeploymentLister {

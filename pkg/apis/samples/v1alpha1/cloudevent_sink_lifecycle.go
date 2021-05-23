@@ -1,5 +1,5 @@
 /*
-Copyright 2020 The Knative Authors
+Copyright 2020 waveywaves
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -24,29 +24,29 @@ import (
 var simpleDeploymentCondSet = apis.NewLivingConditionSet()
 
 // GetGroupVersionKind implements kmeta.OwnerRefable
-func (*SimpleDeployment) GetGroupVersionKind() schema.GroupVersionKind {
-	return SchemeGroupVersion.WithKind("SimpleDeployment")
+func (*CloudeventSink) GetGroupVersionKind() schema.GroupVersionKind {
+	return SchemeGroupVersion.WithKind("CloudeventSink")
 }
 
 // GetConditionSet retrieves the condition set for this resource. Implements the KRShaped interface.
-func (d *SimpleDeployment) GetConditionSet() apis.ConditionSet {
+func (d *CloudeventSink) GetConditionSet() apis.ConditionSet {
 	return simpleDeploymentCondSet
 }
 
 // InitializeConditions sets the initial values to the conditions.
-func (ds *SimpleDeploymentStatus) InitializeConditions() {
+func (ds *CloudeventSinkStatus) InitializeConditions() {
 	simpleDeploymentCondSet.Manage(ds).InitializeConditions()
 }
 
-// MarkPodsNotReady makes the SimpleDeployment be not ready.
-func (ds *SimpleDeploymentStatus) MarkPodsNotReady(n int32) {
+// MarkPodsNotReady makes the CloudeventSink be not ready.
+func (ds *CloudeventSinkStatus) MarkPodsNotReady(n int32) {
 	simpleDeploymentCondSet.Manage(ds).MarkFalse(
 		SimpleDeploymentConditionReady,
 		"PodsNotReady",
 		"%d pods are not ready yet", n)
 }
 
-// MarkPodsReady makes the SimpleDeployment be ready.
-func (ds *SimpleDeploymentStatus) MarkPodsReady() {
+// MarkPodsReady makes the CloudeventSink be ready.
+func (ds *CloudeventSinkStatus) MarkPodsReady() {
 	simpleDeploymentCondSet.Manage(ds).MarkTrue(SimpleDeploymentConditionReady)
 }
