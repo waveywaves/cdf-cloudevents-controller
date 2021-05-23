@@ -15,19 +15,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: controller
-  namespace: knative-samples
+  name: cloudevents-controller
+  namespace: cloudevents-controller
   labels:
     cloudevents.waveywaves.dev/release: devel
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: controller
+      app: cloudevents-controller
   template:
     metadata:
       labels:
-        app: controller
+        app: cloudevents-controller
         cloudevents.waveywaves.dev/release: devel
     spec:
       # To avoid node becoming SPOF, spread our replicas to different nodes.
@@ -37,16 +37,25 @@ spec:
           - podAffinityTerm:
               labelSelector:
                 matchLabels:
-                  app: controller
+                  app: cloudevents-controller
               topologyKey: kubernetes.io/hostname
             weight: 100
-
+      volumes:
+        - name: config-logging
+          configMap:
+            name: config-logging
       serviceAccountName: controller
       containers:
-      - name: controller
+      - name: cloudevents-controller
         # This is the Go import path for the binary that is containerized
         # and substituted here.
         image: ko://github.com/waveywaves/cloudevents-controller/cmd/controller
+        args: [
+        "-sink-http-image", "ko://github.com/waveywaves/cloudevents-controller/cmd/sink-http"
+        ]
+        volumeMounts:
+          - name: config-logging
+            mountPath: /etc/config-logging
         resources:
           requests:
             cpu: 100m
@@ -71,8 +80,9 @@ spec:
 
         securityContext:
           allowPrivilegeEscalation: false
-          readOnlyRootFilesystem: true
-          runAsNonRoot: false
           capabilities:
             drop:
-            - all
+              - all
+          # User 65532 is the distroless nonroot user ID
+          runAsUser: 65532
+          runAsGroup: 65532

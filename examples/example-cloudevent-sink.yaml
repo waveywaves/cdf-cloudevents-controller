@@ -1,7 +1,6 @@
 apiVersion: cloudevents.waveywaves.dev/v1alpha1
 kind: CloudeventSink
 metadata:
-  name: example-simple-deployment
+  name: example-cloudevent-sink
 spec:
-  image: gcr.io/knative-samples/helloworld-go
-  replicas: 2
+  type: "http"

@@ -54,8 +54,7 @@ var (
 
 // CloudeventSinkSpec holds the desired state of the CloudeventSink (from the client).
 type CloudeventSinkSpec struct {
-	Image    string `json:"image"`
-	Replicas int32  `json:"replicas"`
+	SinkType string `json:"type,omitempty"`
 }
 
 const (

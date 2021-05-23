@@ -16,7 +16,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: config-observability
-  namespace: knative-samples
+  namespace: cloudevents-controller
   labels:
     cloudevents.waveywaves.dev/release: devel
 

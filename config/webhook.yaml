@@ -15,8 +15,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: webhook
-  namespace: knative-samples
+  name: cloudevents-webhook
+  namespace: cloudevents-controller
   labels:
     cloudevents.waveywaves.dev/release: devel
 spec:

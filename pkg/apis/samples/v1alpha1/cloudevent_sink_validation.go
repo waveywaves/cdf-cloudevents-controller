@@ -29,8 +29,8 @@ func (d *CloudeventSink) Validate(ctx context.Context) *apis.FieldError {
 
 // Validate implements apis.Validatable
 func (ds *CloudeventSinkSpec) Validate(ctx context.Context) *apis.FieldError {
-	if ds.Image == "" {
-		return apis.ErrMissingField("image")
+	if ds.SinkType == "" {
+		return apis.ErrMissingField("type")
 	}
 	return nil
 }

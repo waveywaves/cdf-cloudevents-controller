@@ -2,6 +2,6 @@ apiVersion: cloudevents.waveywaves.dev/v1alpha1
 kind: AddressableService
 metadata:
   name: make-it-addressable
-  namespace: knative-samples
+  namespace: cloudevents-controller
 spec:
   serviceName: webhook

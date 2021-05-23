@@ -17,6 +17,10 @@ limitations under the License.
 package main
 
 import (
+	"flag"
+	"github.com/waveywaves/cloudevents-controller/pkg/apis/samples"
+	"log"
+
 	// The set of controllers this controller process runs.
 	"github.com/waveywaves/cloudevents-controller/pkg/reconciler/addressableservice"
 	"github.com/waveywaves/cloudevents-controller/pkg/reconciler/cloudeventsink"
@@ -25,9 +29,21 @@ import (
 	"knative.dev/pkg/injection/sharedmain"
 )
 
+var (
+	sinkHTTPImage = flag.String("sink-http-image", "", "The container image used for creating a HTTP based cloudevent sink")
+)
+
 func main() {
+
+	sinkImages := samples.SinkImages{
+		HTTP: *sinkHTTPImage,
+	}
+	if err := sinkImages.Validate(); err != nil {
+		log.Fatal(err)
+	}
+
 	sharedmain.Main("controller",
 		addressableservice.NewController,
-		cloudeventsink.NewController,
+		cloudeventsink.NewController(sinkImages),
 	)
 }

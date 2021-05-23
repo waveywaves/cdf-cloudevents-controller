@@ -19,7 +19,7 @@ metadata:
     role: webhook
     cloudevents.waveywaves.dev/release: devel
   name: webhook
-  namespace: knative-samples
+  namespace: cloudevents-controller
 spec:
   ports:
     - port: 443

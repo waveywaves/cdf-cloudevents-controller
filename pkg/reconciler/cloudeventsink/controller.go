@@ -18,46 +18,44 @@ package cloudeventsink
 
 import (
 	"context"
+	"github.com/waveywaves/cloudevents-controller/pkg/apis/samples"
 
 	"knative.dev/pkg/configmap"
 	"knative.dev/pkg/controller"
 	"knative.dev/pkg/logging"
 
-	simpledeploymentinformer "github.com/waveywaves/cloudevents-controller/pkg/client/injection/informers/samples/v1alpha1/cloudeventsink"
-	simpledeploymentreconciler "github.com/waveywaves/cloudevents-controller/pkg/client/injection/reconciler/samples/v1alpha1/cloudeventsink"
+	cloudeventsinkinformer "github.com/waveywaves/cloudevents-controller/pkg/client/injection/informers/samples/v1alpha1/cloudeventsink"
+	cloudeventsinkreconciler "github.com/waveywaves/cloudevents-controller/pkg/client/injection/reconciler/samples/v1alpha1/cloudeventsink"
 	kubeclient "knative.dev/pkg/client/injection/kube/client"
 	podinformer "knative.dev/pkg/client/injection/kube/informers/core/v1/pod"
 )
 
 // NewController creates a Reconciler and returns the result of NewImpl.
-func NewController(
-	ctx context.Context,
-	cmw configmap.Watcher,
-) *controller.Impl {
-	logger := logging.FromContext(ctx)
+func NewController(images samples.SinkImages) func(ctx context.Context, cmw configmap.Watcher) *controller.Impl {
+	return func(ctx context.Context, cmw configmap.Watcher) *controller.Impl {
+		logger := logging.FromContext(ctx)
 
-	// Obtain an informer to both the main and child resources. These will be started by
-	// the injection framework automatically. They'll keep a cached representation of the
-	// cluster's state of the respective resource at all times.
-	simpledeploymentInformer := simpledeploymentinformer.Get(ctx)
-	podInformer := podinformer.Get(ctx)
+		// Obtain an informer to both the main and child resources. These will be started by
+		// the injection framework automatically. They'll keep a cached representation of the
+		// cluster's state of the respective resource at all times.
+		cloudeventsinkInformer := cloudeventsinkinformer.Get(ctx)
+		podInformer := podinformer.Get(ctx)
 
-	r := &Reconciler{
-		// The client will be needed to create/delete Pods via the API.
-		kubeclient: kubeclient.Get(ctx),
-		// A lister allows read-only access to the informer's cache, allowing us to cheaply
-		// read pod data.
-		podLister: podInformer.Lister(),
+		r := &Reconciler{
+			SinkImages: images,
+			kubeclient: kubeclient.Get(ctx),
+			podLister:  podInformer.Lister(),
+		}
+		impl := cloudeventsinkreconciler.NewImpl(ctx, r)
+
+		logger.Info("Setting up event handlers.")
+
+		// Listen for events on the main resource and enqueue themselves.
+		cloudeventsinkInformer.Informer().AddEventHandler(controller.HandleAll(impl.Enqueue))
+
+		// Listen for events on the child resources and enqueue the owner of them.
+		podInformer.Informer().AddEventHandler(controller.HandleAll(impl.EnqueueControllerOf))
+
+		return impl
 	}
-	impl := simpledeploymentreconciler.NewImpl(ctx, r)
-
-	logger.Info("Setting up event handlers.")
-
-	// Listen for events on the main resource and enqueue themselves.
-	simpledeploymentInformer.Informer().AddEventHandler(controller.HandleAll(impl.Enqueue))
-
-	// Listen for events on the child resources and enqueue the owner of them.
-	podInformer.Informer().AddEventHandler(controller.HandleAll(impl.EnqueueControllerOf))
-
-	return impl
 }

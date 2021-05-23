@@ -43,81 +43,40 @@ const podOwnerLabelKey = samples.GroupName + "/podOwner"
 type Reconciler struct {
 	kubeclient kubernetes.Interface
 	podLister  corev1listers.PodLister
+	SinkImages samples.SinkImages
 }
 
 // Check that our Reconciler implements Interface
 var _ cloudeventsinkreconciler.Interface = (*Reconciler)(nil)
 
 // ReconcileKind implements Interface.ReconcileKind.
-func (r *Reconciler) ReconcileKind(ctx context.Context, d *samplesv1alpha1.CloudeventSink) reconciler.Event {
+func (r *Reconciler) ReconcileKind(ctx context.Context, cs *samplesv1alpha1.CloudeventSink) reconciler.Event {
 	// This logger has all the context necessary to identify which resource is being reconciled.
 	logger := logging.FromContext(ctx)
 
 	// Get all the pods created by the current CloudeventSink. The result is read from
 	// cache (via the lister).
 	selector := labels.SelectorFromSet(labels.Set{
-		podOwnerLabelKey: d.Name,
+		podOwnerLabelKey: cs.Name,
 	})
-	existingPods, err := r.podLister.Pods(d.Namespace).List(selector)
+
+	existingPods, err := r.podLister.Pods(cs.Namespace).List(selector)
 	if err != nil {
 		return fmt.Errorf("failed to list existing pods: %w", err)
 	}
-	logger.Infof("Found %d pods in total", len(existingPods))
+	logger.Infof("Found %cs pods in total", len(existingPods))
 
-	// Find out which pods have the current image and which ones are outdated.
-	currentPods, outdatedPods := partitionPods(existingPods, d.Spec.Image)
-
-	// Remove all outdated pods. They don't represent a state we want to be in.
-	logger.Infof("Deleting %d outdated pods", len(outdatedPods))
-	for _, pod := range outdatedPods {
-		if err := r.kubeclient.CoreV1().Pods(d.Namespace).Delete(ctx, pod.Name, metav1.DeleteOptions{}); err != nil {
-			return fmt.Errorf("failed to delete pod: %w", err)
-		}
-	}
-
-	currentCount := int32(len(currentPods))
-	if currentCount < d.Spec.Replicas {
-		// We don't have as many replicas as we should, so create the remaining ones.
-		toCreate := d.Spec.Replicas - currentCount
-		logger.Infof("Got %d existing pods, want %d -> creating %d", currentCount, d.Spec.Replicas, toCreate)
-		pod := makePod(d)
-		for i := int32(0); i < toCreate; i++ {
-			if _, err := r.kubeclient.CoreV1().Pods(pod.Namespace).Create(ctx, pod, metav1.CreateOptions{}); err != nil {
-				return fmt.Errorf("failed to create pod: %w", err)
-			}
-		}
-	} else if currentCount > d.Spec.Replicas {
-		// We have too many replicas, so remove the ones that are too much.
-		toDelete := currentCount - d.Spec.Replicas
-		logger.Infof("Got %d existing pods, want %d -> removing %d", currentCount, d.Spec.Replicas, toDelete)
-		for i := int32(0); i < toDelete; i++ {
-			if err := r.kubeclient.CoreV1().Pods(d.Namespace).Delete(ctx, currentPods[i].Name, metav1.DeleteOptions{}); err != nil {
-				return fmt.Errorf("failed to delete pod: %w", err)
-			}
-		}
-	}
-
-	// Surface the readiness of the pods we've launched.
-	var readyPods int32
-	for _, p := range currentPods {
-		if isPodReady(p) {
-			readyPods++
-		}
-	}
-
-	d.Status.ReadyReplicas = readyPods
-	if readyPods >= d.Spec.Replicas {
-		d.Status.MarkPodsReady()
-	} else {
-		d.Status.MarkPodsNotReady(d.Spec.Replicas - readyPods)
+	pod := r.makeHTTPSinkPod(cs)
+	if _, err := r.kubeclient.CoreV1().Pods(pod.Namespace).Create(ctx, pod, metav1.CreateOptions{}); err != nil {
+		return fmt.Errorf("failed to create pod: %w", err)
 	}
 
 	return nil
 }
 
-// makePod generates a simple pod to be created in the given namespace with the given
+// makeHTTPSinkPod generates a simple pod to be created in the given namespace with the given
 // image.
-func makePod(d *samplesv1alpha1.CloudeventSink) *corev1.Pod {
+func (r *Reconciler) makeHTTPSinkPod(d *samplesv1alpha1.CloudeventSink) *corev1.Pod {
 	return &corev1.Pod{
 		ObjectMeta: metav1.ObjectMeta{
 			Namespace:    d.Namespace,
@@ -132,28 +91,11 @@ func makePod(d *samplesv1alpha1.CloudeventSink) *corev1.Pod {
 		},
 		Spec: corev1.PodSpec{
 			Containers: []corev1.Container{{
-				Name:  "user-container",
-				Image: d.Spec.Image,
+				Name:  "http-sink",
+				Image: r.SinkImages.HTTP,
 			}},
 		},
 	}
-}
-
-// partitionPods returns a list of pods that have the correct image set and a list of
-// pods with a wrong (potentially old) image.
-func partitionPods(pods []*corev1.Pod, wantImage string) ([]*corev1.Pod, []*corev1.Pod) {
-	var current []*corev1.Pod
-	var outdated []*corev1.Pod
-
-	for _, pod := range pods {
-		if pod.Spec.Containers[0].Image == wantImage {
-			current = append(current, pod)
-		} else {
-			outdated = append(outdated, pod)
-		}
-	}
-
-	return current, outdated
 }
 
 // isPodReady returns whether or not the given pod is ready.
