@@ -50,25 +50,33 @@ type Reconciler struct {
 var _ cloudeventsinkreconciler.Interface = (*Reconciler)(nil)
 
 // ReconcileKind implements Interface.ReconcileKind.
-func (r *Reconciler) ReconcileKind(ctx context.Context, cs *samplesv1alpha1.CloudeventSink) reconciler.Event {
+func (r *Reconciler) ReconcileKind(ctx context.Context, ces *samplesv1alpha1.CloudeventSink) reconciler.Event {
 	// This logger has all the context necessary to identify which resource is being reconciled.
 	logger := logging.FromContext(ctx)
 
 	// Get all the pods created by the current CloudeventSink. The result is read from
 	// cache (via the lister).
 	selector := labels.SelectorFromSet(labels.Set{
-		podOwnerLabelKey: cs.Name,
+		podOwnerLabelKey: ces.Name,
 	})
 
-	existingPods, err := r.podLister.Pods(cs.Namespace).List(selector)
+	existingPods, err := r.podLister.Pods(ces.Namespace).List(selector)
 	if err != nil {
 		return fmt.Errorf("failed to list existing pods: %w", err)
 	}
-	logger.Infof("Found %cs pods in total", len(existingPods))
+	logger.Infof("Found %ces pods in total", len(existingPods))
 
-	pod := r.makeHTTPSinkPod(cs)
-	if _, err := r.kubeclient.CoreV1().Pods(pod.Namespace).Create(ctx, pod, metav1.CreateOptions{}); err != nil {
-		return fmt.Errorf("failed to create pod: %w", err)
+	if len(existingPods) == 0 {
+		//sinkType := ces.Spec.SinkType
+		//switch sinkType {
+		//case "http":
+		pod := r.makeHTTPSinkPod(ces)
+		if _, err := r.kubeclient.CoreV1().Pods(pod.Namespace).Create(ctx, pod, metav1.CreateOptions{}); err != nil {
+			return fmt.Errorf("failed to create pod: %w", err)
+		}
+		//default:
+		//	logger.Infof("Unknown sink: Cannot create sink '"+sinkType+"'")
+		//}
 	}
 
 	return nil
@@ -76,18 +84,18 @@ func (r *Reconciler) ReconcileKind(ctx context.Context, cs *samplesv1alpha1.Clou
 
 // makeHTTPSinkPod generates a simple pod to be created in the given namespace with the given
 // image.
-func (r *Reconciler) makeHTTPSinkPod(d *samplesv1alpha1.CloudeventSink) *corev1.Pod {
+func (r *Reconciler) makeHTTPSinkPod(ces *samplesv1alpha1.CloudeventSink) *corev1.Pod {
 	return &corev1.Pod{
 		ObjectMeta: metav1.ObjectMeta{
-			Namespace:    d.Namespace,
-			GenerateName: d.Name + "-",
+			Namespace:    ces.Namespace,
+			GenerateName: ces.Name + "-cesink-",
 			Labels: map[string]string{
 				// The label allows for easy querying of all the pods created.
-				podOwnerLabelKey: d.Name,
+				podOwnerLabelKey: ces.Name,
 			},
 			// The OwnerReference makes sure the pods get removed automatically once the
 			// CloudeventSink is removed.
-			OwnerReferences: []metav1.OwnerReference{*kmeta.NewControllerRef(d)},
+			OwnerReferences: []metav1.OwnerReference{*kmeta.NewControllerRef(ces)},
 		},
 		Spec: corev1.PodSpec{
 			Containers: []corev1.Container{{

@@ -63,7 +63,5 @@ func main() {
 		cloudeventsink.NewController(sinkImages),
 	)
 
-	sharedmain.Main("controller",
-
-	)
+	sharedmain.Main("controller")
 }

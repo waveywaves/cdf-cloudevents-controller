@@ -3,6 +3,7 @@ module github.com/waveywaves/cloudevents-controller
 go 1.15
 
 require (
+	github.com/cloudevents/sdk-go/v2 v2.4.1
 	go.uber.org/multierr v1.6.0 // indirect
 	go.uber.org/zap v1.16.0
 	k8s.io/api v0.19.7

@@ -1,6 +1,6 @@
 apiVersion: cloudevents.waveywaves.dev/v1alpha1
 kind: CloudeventSink
 metadata:
-  name: example-cloudevent-sink
+  name: example
 spec:
   type: "http"
