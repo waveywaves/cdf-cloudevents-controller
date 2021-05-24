@@ -1,6 +1,7 @@
 # Cloudevents Controller
 
-Create cloudevent sinks and conversion sources which map to those particular sinks.
+Create sinks to ingest cloudevents and conversion brokers which convert cloudevents from on type to the other. 
+Converted cloudevents can be forwarded to other sinks. 
 
 ## Terminology
 
@@ -22,7 +23,7 @@ spec:
   type: "http" # type of cloudevents which the sink can accept
 ```
 
-### ConversionBroker
+### ConversionBroker (TODO)
 
 `ConversionBroker` converts incoming cloudevent from the sink to the required type.
 
