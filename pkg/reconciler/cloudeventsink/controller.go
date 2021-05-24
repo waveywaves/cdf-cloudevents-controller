@@ -28,6 +28,7 @@ import (
 	cloudeventsinkreconciler "github.com/waveywaves/cloudevents-controller/pkg/client/injection/reconciler/samples/v1alpha1/cloudeventsink"
 	kubeclient "knative.dev/pkg/client/injection/kube/client"
 	podinformer "knative.dev/pkg/client/injection/kube/informers/core/v1/pod"
+	svcinformer "knative.dev/pkg/client/injection/kube/informers/core/v1/service"
 )
 
 // NewController creates a Reconciler and returns the result of NewImpl.
@@ -40,11 +41,13 @@ func NewController(images samples.SinkImages) func(ctx context.Context, cmw conf
 		// cluster's state of the respective resource at all times.
 		cloudeventsinkInformer := cloudeventsinkinformer.Get(ctx)
 		podInformer := podinformer.Get(ctx)
+		svcInformer := svcinformer.Get(ctx)
 
 		r := &Reconciler{
 			SinkImages: images,
 			kubeclient: kubeclient.Get(ctx),
 			podLister:  podInformer.Lister(),
+			svcLister: svcInformer.Lister(),
 		}
 		impl := cloudeventsinkreconciler.NewImpl(ctx, r)
 
